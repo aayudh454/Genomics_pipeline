@@ -169,6 +169,7 @@ samtools index FC640335_S11.bam
 
 ### STEP3- Check in IGV to confirm the bp chnge
 
+![image](IGV check.png)
 
 ### STEP4- R script 2- Exclude multiple of 3
 

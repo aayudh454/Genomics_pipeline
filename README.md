@@ -172,6 +172,7 @@ samtools index FC640335_S11.bam
 ![image](IGV_check.png)
 
 ### STEP4- R script 2- Exclude multiple of 3
+if the deletion or insertion is a multiple of three base pairs, it avoids frameshift mutations. A frameshift mutation occurs when the number of inserted or deleted nucleotides is not divisible by three, causing a shift in the reading frame of the gene. This results in a completely different sequence of codons downstream from the mutation site. As a result, the ribosome, which reads the mRNA sequence to assemble the protein, will interpret the sequence in the incorrect frame, leading to the synthesis of a nonfunctional or entirely different protein.
 
 ```
 setwd("C:/Users/aayudh.das/OneDrive - Garuda Therapeutics/master data")

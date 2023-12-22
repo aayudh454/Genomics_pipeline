@@ -3,7 +3,7 @@
 ## Table of contents    
 * [Page 1: 2023-22-07](#id-section1). Chapter 1: CRISPR Knockout validation 
 
-* [Page 2: 2022-30-06](#id-section2). Chapter 2: Single cell data analysis
+* [Page 2: 2022-30-06](#id-section2). Chapter 2: Alignment for CRISPR samples
 
 
 
@@ -215,3 +215,30 @@ write.xlsx(samples, "1.GAR113H_GAR111J_FINAL_clones_name.xlsx", rowNames = FALSE
 
 -----
 <div id='id-section2'/>
+
+The provided code is an example command for running the fastp tool, which is a fast all-in-one preprocessing tool for quality control (QC) of high-throughput sequencing data, especially for Illumina data. Let's break down the command and explain each option:
+
+```
+/data/home/aayudh-das/fastp
+-w 96                       # Use 96 CPU threads for parallel processing
+--detect_adapter_for_pe     # Automatically detect and remove adapters for paired-end data
+-W 4                        # Set the window size option shared by cut_front, cut_tail, or cut_sliding to 4
+-M 20                       # Set the mean quality requirement option shared by cut_front, cut_tail, or cut_sliding to 20
+--cut_by_quality3           # Trim low-quality bases from the 3' end of the read
+--length_required 15        # Discard reads shorter than 15 bases
+-i /data/home/aayudh-das/sop_test/GEB_0015_43A.R1.fastq.gz  # Input file for the first read pair
+-o /data/home/aayudh-das/sop_test/GEB_0015_43A.R1.trimmed.fastq.gz  # Output file for the trimmed first read pair
+-I /data/home/aayudh-das/sop_test/GEB_0015_43A.R2.fastq.gz  # Input file for the second read pair
+-O /data/home/aayudh-das/sop_test/GEB_0015_43A.R2.trimmed.fastq.gz  # Output file for the trimmed second read pair
+```
+Explanation of options:
+
+-w 96: This specifies the number of CPU threads to be used for parallel processing. Adjust this based on the available resources.
+--detect_adapter_for_pe: Enables automatic detection and removal of adapters for paired-end data.
+-W 4: Sets the window size option for quality control operations like cut_front, cut_tail, or cut_sliding to 4.
+-M 20: Sets the mean quality requirement for quality control operations to 20.
+--cut_by_quality3: Trims low-quality bases from the 3' end of the reads.
+--length_required 15: Discards reads that are shorter than 15 bases.
+-i and -I: Specify the input files for the first and second read pairs, respectively.
+-o and -O: Specify the output files for the trimmed first and second read pairs, respectively.
+The provided command is tailored for processing paired-end sequencing data (-i and -I options). It's essential to adjust parameters based on the specific characteristics of your sequencing data and quality requirements.

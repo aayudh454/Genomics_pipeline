@@ -1,9 +1,9 @@
 # Genomics_pipeline
 
 ## Table of contents    
-* [Page 1: 2023-22-07](#id-section1). Chapter 1: CRISPR Knockout validation 
+* [Page 1: 2023-22-07](#id-section1). Chapter 1: CRISPR Knockout validation (Aompicon sequencing) 
 
-* [Page 2: 2022-30-06](#id-section2). Chapter 2: Alignment for CRISPR samples
+* [Page 2: 2022-30-06](#id-section2). Chapter 2: Fastp and bwa of GEB clones
 
 
 
@@ -216,7 +216,10 @@ write.xlsx(samples, "1.GAR113H_GAR111J_FINAL_clones_name.xlsx", rowNames = FALSE
 -----
 <div id='id-section2'/>
 
-The provided code is an example command for running the fastp tool, which is a fast all-in-one preprocessing tool for quality control (QC) of high-throughput sequencing data, especially for Illumina data. Let's break down the command and explain each option:
+## Chapter 2: Fastp and bwa of GEB clones
+
+### fastp
+fastp is a bioinformatics tool designed for the preprocessing and quality control of high-throughput sequencing data, particularly for Illumina sequencing platforms. It is an efficient and versatile tool that performs a variety of tasks, including adapter removal, quality filtering, and trimming of low-quality bases. The primary goal of fastp is to enhance the quality of raw sequencing data before downstream analysis, such as genome assembly, variant calling, or other bioinformatics applications.
 
 ```
 /data/home/aayudh-das/fastp

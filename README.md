@@ -6,7 +6,6 @@
 * [Page 2: 2022-30-06](#id-section2). Chapter 2: Fastp and bwa of GEB clones
 
 
-
 ------
 <div id='id-section1'/>
 
@@ -215,6 +214,7 @@ write.xlsx(samples, "1.GAR113H_GAR111J_FINAL_clones_name.xlsx", rowNames = FALSE
 
 -----
 <div id='id-section2'/>
+
 
 ## Chapter 2: Fastp and bwa of GEB clones
 

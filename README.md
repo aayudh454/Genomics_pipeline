@@ -373,7 +373,7 @@ echo "Processing complete for chromosomes 1-22."
 | 1     | 17496 | .  | AC  | A   | 0\|0             |
 | 1     | 51479 | .  | T   | A   | 0\|0             |
 
-5. Now run script **2.coordinate_process.R**.
+5. Now run script **2.coordinate_process.R** to form a 
 
 ```
 #!/usr/bin/env Rscript
@@ -408,5 +408,64 @@ Now each chromosome file (.csv) will have this-
 | chr1:54716_C>T    |
 | chr1:54753_T>G    |
 
-6. sSASasAS
+### Process IGSR WGS data in Basepair
 
+Doenload the WGS files (fastq.gz) for the same genotype and run it in basepair with our variant callign pipeline. Then download them in baspepair -
+
+```
+wget -O file_name 
+"https://basepair.s3.amazonaws.com/analyses/5389/118672/snpeff/HG01148_ERR022469.GRCh38.fi[…]ae8e89318882a16c00c69f5ad607b3a1fe7d8504d62cb90005c0d77f"
+```
+1. First split the chromosomes with **bcftools**.
+
+```
+#!/bin/bash
+  
+# Define the input VCF file
+input_vcf="SRR360540_HG01953_LimaPeru.hg19.variants.vcf.gz"
+
+# Loop through chromosomes 1-22
+for chr in {1..22}; do
+    # Define the output file names
+    output_vcf="SRR360540_HG01953_LimaPeru.hg19.chr${chr}.variants.vcf.gz"
+    output_csv="chr${chr}_variants.csv"
+
+    # Extract chromosome-specific variants and save to a new VCF file
+    bcftools view -r chr${chr} $input_vcf -Oz -o $output_vcf
+
+    # Query the chromosome-specific VCF to extract desired fields and save to a CSV file
+    bcftools query -f '%CHROM,%POS,%REF,%ALT\n' $output_vcf > $output_csv
+done
+
+echo "Processing complete."
+```
+2. For each chromosomes now generate the coordinates.
+
+```
+#!/usr/bin/env Rscript
+  
+# Loop through chromosomes 1-22
+for (chr in 1:22) {
+  # Define input and output file names
+  input_file <- paste0("chr", chr, "_variants.csv")
+  output_file <- paste0("HG01953_LimaPeru_chr", chr, "_basepair_filtered.csv")
+
+  # Load data from the CSV file
+  data <- read.csv(input_file, sep = ",", header = FALSE)
+
+  # Assign column names
+  colnames(data) <- c("CHROM", "POS", "REF", "ALT")
+
+  # Create a new column 'coordinate' with a specific format
+  data$coordinate <- paste(data$CHROM, ":", data$POS, "_", data$REF, ">", data$ALT, sep = "")
+
+  # Create a new data frame with only the 'coordinate' column
+  new_data <- data.frame(coordinate = data$coordinate)
+
+  # Write the new data frame to a CSV file
+  write.csv(new_data, output_file, row.names = FALSE)
+}
+
+cat("Processing complete for chromosomes 1-22.\n")
+```
+3. 

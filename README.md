@@ -365,21 +365,42 @@ done
 
 echo "Processing complete for chromosomes 1-22."
 ```
-4. Now this will create a table
+4. Now this will create a table with all the columns info needed find out the coordinate. 
 
 | CHROM | POS   | ID | REF | ALT | Genotype_HG01148 |
 |-------|-------|----|-----|-----|------------------|
 | 1     | 16103 | .  | T   | G   | 0\|0             |
 | 1     | 17496 | .  | AC  | A   | 0\|0             |
 | 1     | 51479 | .  | T   | A   | 0\|0             |
-| 1     | 51898 | .  | C   | A   | 0\|0             |
-| 1     | 51928 | .  | G   | A   | 0\|0             |
-| 1     | 51954 | .  | G   | C   | 0\|0             |
-| 1     | 54490 | .  | G   | A   | 0\|0             |
-| 1     | 54669 | .  | C   | T   | 0\|0             |
-| 1     | 54708 | .  | G   | C   | 0\|1             |
+
+5. Now run script **2.coordinate_process.R**.
 
 ```
+#!/usr/bin/env Rscript
+  
+for (chr in 1:22) {
+  file_name <- paste("HG01148_Colombian_IGSR_chr", chr, ".txt", sep = "")
+  data <- read.table(file_name, header = TRUE, sep = "\t", stringsAsFactors = FALSE, fill = TRUE)
+
+  # Splitting and processing data as per your script
+  split_data <- strsplit(as.character(data$CHROM), " ")
+  data$CHROM <- sapply(split_data, function(x) x[1])
+  data$POS <- as.integer(sapply(split_data, function(x) x[2]))
+  data$REF <- sapply(split_data, function(x) x[4])
+  data$ALT <- sapply(split_data, function(x) x[5])
+  data$Genotype <- sapply(split_data, function(x) x[6])
+  data$ID <- NULL
+
+  data$coordinate = gsub(" ", "", paste("chr", data$CHROM, ":", data$POS, "_", data$REF, ">", data$ALT))
+  subset_df = subset(data, Genotype != "0|0")
+
+  new_data <- data.frame(coordinate = subset_df$coordinate)
+
+  # Generating a CSV file for each chromosome
+  output_file_name <- paste("HG01148_Colombian_IGSR_coordinate_chr", chr, ".csv", sep = "")
+  write.csv(new_data, output_file_name, row.names = FALSE)
+}
 ```
-6. sdsdsadas
+
+6. sSASasAS
 

@@ -307,7 +307,7 @@ GEB_0015_43A.hg19.dedup.bam: This is the output BAM file. It will contain the sa
 
 ### Process IGSR variant lists 
 
-1. Choose american ancestry based datasets from IGSR- https://www.internationalgenome.org/data-portal/sample/HG01148. Now extract the variants to servers for all 22 chromosomes. Now find out which column has the exact genotype. So, run this script "find_colno.sh" -
+1. Choose american ancestry based datasets from IGSR- https://www.internationalgenome.org/data-portal/sample/HG01148. Now extract the variants to servers for all 22 chromosomes. Now find out which column has the exact genotype. So, run this script **find_colno.sh** -
 
 ```
 #!/bin/bash
@@ -326,8 +326,7 @@ else
 fi
 ```
 2. Now extract the CHROM, POS, ID, REF, ALT, Genotype_HG01148 from the vcf.gz files. In the script # Extract columns from the VCF, considering header lines and the 400th sample
-    zcat $vcf_file | awk '{if(NR<=21 || $1 ~ /^#/) print; else print $1,$2,$3,$4,$5, $400}' > $extracted_columns ----in this line change the "$400" to whatever column number result you get from the "find_colno.sh". Now execute this script- *1.extract_pos_IGSR.sh*
-
+    zcat $vcf_file | awk '{if(NR<=21 || $1 ~ /^#/) print; else print $1,$2,$3,$4,$5, $400}' > $extracted_columns ----in this line **change the "$400" to whatever column number** result you get from the **find_colno.sh**. Now execute this script- **1.extract_pos_IGSR.sh**
 
 ```
 #!/bin/bash

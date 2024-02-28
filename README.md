@@ -365,5 +365,20 @@ done
 
 echo "Processing complete for chromosomes 1-22."
 ```
-4. dasasasass
+4. Now this will create a table
+| CHROM | POS   | ID | REF | ALT | Genotype_HG01148 |
+|-------|-------|----|-----|-----|------------------|
+| 1     | 16103 | .  | T   | G   | 0\|0             |
+| 1     | 17496 | .  | AC  | A   | 0\|0             |
+| 1     | 51479 | .  | T   | A   | 0\|0             |
+| 1     | 51898 | .  | C   | A   | 0\|0             |
+| 1     | 51928 | .  | G   | A   | 0\|0             |
+| 1     | 51954 | .  | G   | C   | 0\|0             |
+| 1     | 54490 | .  | G   | A   | 0\|0             |
+| 1     | 54669 | .  | C   | T   | 0\|0             |
+| 1     | 54708 | .  | G   | C   | 0\|1             |
+
+```
+```
+6. sdsdsadas
 

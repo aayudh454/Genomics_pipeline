@@ -401,7 +401,7 @@ for (chr in 1:22) {
   write.csv(new_data, output_file_name, row.names = FALSE)
 }
 ```
-
+Now each chromosome file (.csv) will have this- 
 | Coordinate        |
 |-------------------|
 | chr1:54708_G>C    |

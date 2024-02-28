@@ -402,5 +402,11 @@ for (chr in 1:22) {
 }
 ```
 
+| Coordinate        |
+|-------------------|
+| chr1:54708_G>C    |
+| chr1:54716_C>T    |
+| chr1:54753_T>G    |
+
 6. sSASasAS
 

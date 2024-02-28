@@ -5,6 +5,8 @@
 
 * [Page 2: 2023-30-11](#id-section2). Chapter 2: Fastp and bwa of GEB clones
 
+* [Page : 2024-15-01](#id-section3). Chapter 3: WGS variant calling qualification
+
 
 ------
 <div id='id-section1'/>
@@ -295,3 +297,74 @@ sambamba markdup: This is the command to invoke the Sambamba tool for marking du
 GEB_0015_43A.bam: This is the input BAM file. It's the file you are processing to find and mark or remove duplicates.
 
 GEB_0015_43A.hg19.dedup.bam: This is the output BAM file. It will contain the same data as the input file but with duplicates marked or removed, as specified.
+
+
+-----
+<div id='id-section3'/>
+
+
+## Chapter 3: WGS qualification (variant calling-2a)
+
+### Process IGSR variant lists 
+
+1. Choose american ancestry based datasets from IGSR- https://www.internationalgenome.org/data-portal/sample/HG01148. Now extract the variants to servers for all 22 chromosomes. Now find out which column has the exact genotype. So, run this script "find_colno.sh" -
+
+```
+#!/bin/bash
+  
+# Define the file name
+fileName="HG01148_Colombian_chr1.vcf.gz"
+
+# Use zgrep to find the header line (which starts with #CHROM), then use awk to search for the specific column
+columnNumber=$(zgrep -m1 "^#CHROM" $fileName | awk '{for(i=1;i<=NF;i++) if($i=="HG01953") print i}')
+
+# Check if the column number was found and print the result
+if [ -z "$columnNumber" ]; then
+  echo "Header HG01953 not found."
+else
+  echo "Header HG01953 is in column number: $columnNumber"
+fi
+```
+2. Now extract the CHROM, POS, ID, REF, ALT, Genotype_HG01148 from the vcf.gz files. In the script # Extract columns from the VCF, considering header lines and the 400th sample
+    zcat $vcf_file | awk '{if(NR<=21 || $1 ~ /^#/) print; else print $1,$2,$3,$4,$5, $400}' > $extracted_columns ----in this line change the "$400" to whatever column number result you get from the "find_colno.sh". Now execute this script- *1.extract_pos_IGSR.sh*
+
+
+```
+#!/bin/bash
+  
+# Loop through chromosomes 1-22
+for chr in {1..22}; do
+    # Define the VCF file name
+    vcf_file="HG01148_Colombian_chr${chr}.vcf.gz"
+    # Define intermediate and output file names
+    extracted_columns="extracted_columns_chr${chr}.txt"
+    filtered_output="filtered_output_chr${chr}.txt"
+    final_output="final_output_chr${chr}.txt"
+    header_file="header.txt"
+    output_file="HG01148_Colombian_IGSR_chr${chr}.txt"
+
+    # Extract columns from the VCF, considering header lines and the 400th sample
+    zcat $vcf_file | awk '{if(NR<=21 || $1 ~ /^#/) print; else print $1,$2,$3,$4,$5, $400}' > $extracted_columns
+
+    # Filter out VCF header lines
+    grep -v "#" $extracted_columns > $filtered_output
+
+    # Remove the first line (column names) from the filtered output
+    tail -n +2 $filtered_output > $final_output
+
+    # Create a new header file
+    echo -e "CHROM\tPOS\tID\tREF\tALT\tGenotype_HG01148" > $header_file
+
+    # Concatenate the new header with the final output
+    cat $header_file $final_output > $output_file
+
+    # Remove intermediate files
+    rm $filtered_output $final_output $extracted_columns
+
+    echo "Processed chromosome $chr."
+done
+
+echo "Processing complete for chromosomes 1-22."
+```
+4. dasasasass
+

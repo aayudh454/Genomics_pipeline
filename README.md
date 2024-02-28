@@ -468,4 +468,13 @@ for (chr in 1:22) {
 
 cat("Processing complete for chromosomes 1-22.\n")
 ```
-3. 
+Now each chromosome file (.csv) will have this- 
+| Coordinate        |
+|-------------------|
+| chr1:54708_G>C    |
+| chr1:54716_C>T    |
+| chr1:54753_T>G    |
+
+### Merging and statistics
+**Now take both the IGSR and basepair derived files to one single folder**-
+

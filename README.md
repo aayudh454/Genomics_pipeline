@@ -366,6 +366,7 @@ done
 echo "Processing complete for chromosomes 1-22."
 ```
 4. Now this will create a table
+
 | CHROM | POS   | ID | REF | ALT | Genotype_HG01148 |
 |-------|-------|----|-----|-----|------------------|
 | 1     | 16103 | .  | T   | G   | 0\|0             |

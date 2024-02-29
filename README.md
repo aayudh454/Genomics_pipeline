@@ -534,3 +534,4 @@ this will generate the dataset like this-
 | 9          | 77.245          | 106,268      | 137,573       | 150,113   |
 | 10         | 80.860          | 137,352      | 169,865       | 209,131   |
 
+![image](columnbian_combined.png)

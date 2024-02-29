@@ -13,7 +13,7 @@
 
 ## Chapter 1: CRISPR Knockout validation 
 
-![image](method_alignment.png)
+![image](23. Feb23_WGS-Qualification and validation.png)
 
 ### STEP1-R script 1: Add % deletion and Insertion and 85% cut-off
 
@@ -305,6 +305,8 @@ GEB_0015_43A.hg19.dedup.bam: This is the output BAM file. It will contain the sa
 
 ## Chapter 3: WGS qualification (variant calling-2a)
 
+![image](method_alignment.png)
+
 ### Process IGSR variant lists 
 
 1. Choose american ancestry based datasets from IGSR- https://www.internationalgenome.org/data-portal/sample/HG01148. Now extract the variants to servers for all 22 chromosomes. Now find out which column has the exact genotype. So, run this script **find_colno.sh** -
@@ -517,4 +519,18 @@ overlap_data <- data.frame(chromosome = chromosomes,
 # Write the data frame to a CSV file
 write.csv(overlap_data, "chromosome_overlap_details.csv", row.names = FALSE)
 ```
+this will generate the dataset like this-
+
+| chromosome | percent_overlap | nrow_overlap | nrow_basepair | nrow_IGSR |
+|------------|-----------------|--------------|---------------|-----------|
+| 1          | 80.589          | 200,820      | 249,189       | 299,986   |
+| 2          | 81.805          | 227,763      | 278,423       | 335,755   |
+| 3          | 82.250          | 187,751      | 228,270       | 276,693   |
+| 4          | 83.485          | 204,397      | 244,831       | 298,252   |
+| 5          | 82.624          | 159,653      | 193,229       | 222,950   |
+| 6          | 81.976          | 168,722      | 205,818       | 245,617   |
+| 7          | 80.167          | 149,816      | 186,881       | 228,924   |
+| 8          | 83.808          | 148,678      | 177,404       | 224,516   |
+| 9          | 77.245          | 106,268      | 137,573       | 150,113   |
+| 10         | 80.860          | 137,352      | 169,865       | 209,131   |
 

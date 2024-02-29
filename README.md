@@ -305,7 +305,7 @@ GEB_0015_43A.hg19.dedup.bam: This is the output BAM file. It will contain the sa
 
 ## Chapter 3: WGS qualification (variant calling-2a)
 
-![image](WGS-Qualification and validation.png)
+![image](WGS_qual_valid.png)
 
 ### Process IGSR variant lists 
 

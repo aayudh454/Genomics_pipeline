@@ -482,7 +482,59 @@ Now each chromosome file (.csv) will have this-
 ### Merging and statistics
 **Now take both the IGSR and basepair derived files to one single folder**-
 
+Run **3.merging_stats.R** script now.
+
 ```
+#!/usr/bin/env Rscript
+
+# Define the base pattern of file names
+base_name <- "HG01953_LimaPeru_chr"
+
+# Create a vector of chromosome numbers
+chromosomes <- c(1:22) # Assuming you have chromosomes 1 through 22, X, and Y. Adjust if different.
+
+# Loop through each chromosome number and read the corresponding file
+for (chr in chromosomes) {
+  # Construct the file name
+  file_name <- paste0(base_name, chr, "_basepair_filtered.csv")
+
+  # Construct the variable name
+  var_name <- paste0("basepair_chr", chr)
+
+  # Read the CSV file and assign it to a dynamic variable name
+  assign(var_name, read.csv(file_name))
+}
+
+# Define the new base pattern of file names
+base_name <- "HG01953_limaperu_IGSR_coordinate_chr"
+
+# Create a vector of chromosome numbers
+chromosomes <- 1:22 # Assuming you have chromosomes 1 through 22. Adjust if different.
+
+# Loop through each chromosome number and read the corresponding file
+for (chr in chromosomes) {
+  # Construct the file name
+  file_name <- paste0(base_name, chr, ".csv")
+
+  # Construct the variable name
+  var_name <- paste0("IGSR_chr", chr)
+
+  # Read the CSV file and assign it to a dynamic variable name
+  assign(var_name, read.csv(file_name))
+}
+
+# Initialize a vector to store percentage overlap for each chromosome
+percent_overlaps <- numeric(22)
+
+# Loop through chromosomes 1 through 22
+for (chr in 1:22) {
+  # Merge data frames for the current chromosome
+  overlap <- merge(get(paste0("basepair_chr", chr)), get(paste0("IGSR_chr", chr)), by = "coordinate")
+
+  # Calculate the percentage overlap
+  percent_overlaps[chr] <- (nrow(overlap) / nrow(get(paste0("IGSR_chr", chr)))) * 100
+}
+
 # Create a data frame containing the percentage overlaps
 chromosomes <- 1:22
 overlap_data <- data.frame(chromosome = chromosomes, percent_overlap = percent_overlaps)
@@ -519,7 +571,7 @@ overlap_data <- data.frame(chromosome = chromosomes,
                            nrow_IGSR = nrow_IGSR)
 
 # Write the data frame to a CSV file
-write.csv(overlap_data, "chromosome_overlap_details.csv", row.names = FALSE)
+write.csv(overlap_data, "chromosome_overlap_details_HG01953_limaperu.csv", row.names = FALSE)
 ```
 this will generate the dataset like this-
 

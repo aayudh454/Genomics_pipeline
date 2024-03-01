@@ -7,6 +7,8 @@
 
 * [Page : 2024-15-01](#id-section3). Chapter 3: WGS variant calling qualification
 
+* [Page : 2024-20-02](#id-section4). Chapter 4: WGS variant calling- pre-qualification criteria
+
 
 ------
 <div id='id-section1'/>
@@ -535,3 +537,12 @@ this will generate the dataset like this-
 | 10         | 80.860          | 137,352      | 169,865       | 209,131   |
 
 ![image](columnbian_combined.png)
+
+
+-----
+<div id='id-section4'/>
+
+
+## Chapter 4: WGS variant calling- pre-qualification criteria
+
+

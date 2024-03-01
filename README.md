@@ -369,7 +369,7 @@ done
 
 echo "Processing complete for chromosomes 1-22."
 ```
-4. Now this will create a table with all the columns info needed find out the coordinate. 
+3. Now this will create a table with all the columns info needed find out the coordinate. 
 
 | CHROM | POS   | ID | REF | ALT | Genotype_HG01148 |
 |-------|-------|----|-----|-----|------------------|
@@ -377,7 +377,7 @@ echo "Processing complete for chromosomes 1-22."
 | 1     | 17496 | .  | AC  | A   | 0\|0             |
 | 1     | 51479 | .  | T   | A   | 0\|0             |
 
-5. Now run script **2.coordinate_process.R** to form a 
+4. Now run script **2.coordinate_process.R** to form a 
 
 ```
 #!/usr/bin/env Rscript

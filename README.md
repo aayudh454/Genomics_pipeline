@@ -309,6 +309,10 @@ GEB_0015_43A.hg19.dedup.bam: This is the output BAM file. It will contain the sa
 
 ![image](WGS_qual_valid.png)
 
+#### Samples-
+**IGSR columnbian** - https://www.internationalgenome.org/data-portal/sample/HG01148
+**IGSR limaperu** - https://www.internationalgenome.org/data-portal/sample/HG01953 
+
 ### Process IGSR variant lists 
 
 1. Choose american ancestry based datasets from IGSR- https://www.internationalgenome.org/data-portal/sample/HG01148. Now extract the variants to servers for all 22 chromosomes. Now find out which column has the exact genotype. So, run this script **find_colno.sh** -

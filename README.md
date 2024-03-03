@@ -424,6 +424,7 @@ Doenload the WGS files (fastq.gz) for the same genotype and run it in basepair w
 wget -O file_name 
 "https://basepair.s3.amazonaws.com/analyses/5389/118672/snpeff/HG01148_ERR022469.GRCh38.fi[…]ae8e89318882a16c00c69f5ad607b3a1fe7d8504d62cb90005c0d77f"
 ```
+**YOU NEED TO DOWNLOAD the vcf.gx and the INDEX file vcf.gz.tbi**
 1. First split the chromosomes with **bcftools**.
 
 ```

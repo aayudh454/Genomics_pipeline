@@ -300,6 +300,25 @@ GEB_0015_43A.bam: This is the input BAM file. It's the file you are processing t
 
 GEB_0015_43A.hg19.dedup.bam: This is the output BAM file. It will contain the same data as the input file but with duplicates marked or removed, as specified.
 
+### D) strelka2
+
+Get a docker where you can run the strelka2. Remember that hg19.fa file needs to be indexed using samtools fdaix hg19.fa.
+
+```
+docker pull dceoy/strelka:latest
+
+docker image ls
+
+docker run --rm -v `pwd`:/work -w /work --entrypoint configureStrelkaSomaticWorkflow.py dceoy/strelka:latest --tumorBam GEB_0015_43A.hg19.dedup.bam --normalBam ICB0004_02CP11.bam.hg19.dedup.bam --referenceFasta hg19.fa --runDir /work
+
+docker run --rm -v `pwd`:/work -w /work --entrypoint ./runWorkflow.py dceoy/strelka:latest -m local -j 32
+```
+
+to kill the job---
+
+```
+docker container rm -f 98b136db5ae0
+```
 
 -----
 <div id='id-section3'/>

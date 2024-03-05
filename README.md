@@ -1,7 +1,7 @@
 # Genomics_pipeline
 
 ## Table of contents    
-* [Page 1: 2023-22-07](#id-section1). Chapter 1: CRISPR Knockout validation (Aompicon sequencing) 
+* [Page 1: 2023-22-07](#id-section1). Chapter 1: CRISPR Knockout validation (Amplicon sequencing) 
 
 * [Page 2: 2023-30-11](#id-section2). Chapter 2: Fastp and bwa of GEB clones
 

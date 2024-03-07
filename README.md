@@ -3,7 +3,7 @@
 ## Table of contents    
 * [Page 1: 2023-22-07](#id-section1). Chapter 1: CRISPR Knockout validation (Amplicon sequencing) 
 
-* [Page 2: 2023-30-11](#id-section2). Chapter 2: Fastp and bwa of GEB clones
+* [Page 2: 2023-30-11](#id-section2). Chapter 2: WGS variant calling pipeline (Fastp, bwa & strelka2)
 
 * [Page : 2024-15-01](#id-section3). Chapter 3: WGS variant calling qualification
 
@@ -220,7 +220,7 @@ write.xlsx(samples, "1.GAR113H_GAR111J_FINAL_clones_name.xlsx", rowNames = FALSE
 <div id='id-section2'/>
 
 
-## Chapter 2: Fastp and bwa of GEB clones
+## Chapter 2: WGS variant calling pipeline
 
 ### A) fastp
 fastp is a bioinformatics tool designed for the preprocessing and quality control of high-throughput sequencing data, particularly for Illumina sequencing platforms. It is an efficient and versatile tool that performs a variety of tasks, including adapter removal, quality filtering, and trimming of low-quality bases. The primary goal of fastp is to enhance the quality of raw sequencing data before downstream analysis, such as genome assembly, variant calling, or other bioinformatics applications.

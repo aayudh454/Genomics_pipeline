@@ -352,6 +352,14 @@ data = data.drop_duplicates(subset=['coordinate']).sort_values(by=['coordinate']
 print(data.head())
 
 ```
+first part is making the coordinates-
+
+| Coordinate        |
+|-------------------|
+| chr1:54708_G>C    |
+| chr1:54716_C>T    |
+| chr1:54753_T>G    |
+
 
 
 -----

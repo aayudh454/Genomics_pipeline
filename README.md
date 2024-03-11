@@ -319,6 +319,27 @@ to kill the job---
 ```
 docker container rm -f 98b136db5ae0
 ```
+### E) snpEff
+
+snpEff: A tool used for annotating variants in VCF files and predicting their effects on genes (e.g., nonsynonymous coding changes, synonymous changes). It uses a database of genomic information to interpret the variants found in a VCF file based on the reference genome specified.
+
+```
+# snpSift step run on both Strelka2 SNV and INDEL output VCFs ###################
+bgzip -dc <vcf input> |
+java -Xmx8g -jar SnpSift.jar annotate
+-name dbsnp_
+<dbSNP database> - |
+java -Xmx8g -jar SnpSift.jar annotate
+-name gnomad_genomes_
+<gnomad genomes database> - |
+java -Xmx8g -jar SnpSift.jar annotate
+-name gnomad_exomes_
+<gnomad exomes database - |
+bgzip -c
+
+# snpEff step run on both Strelka2 SNV and INDEL outputs ##########################
+snpEff <genome> <vcf input>
+```
 
 
 ### Visualization

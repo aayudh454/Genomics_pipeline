@@ -320,6 +320,40 @@ to kill the job---
 docker container rm -f 98b136db5ae0
 ```
 
+
+### Visualization
+
+```
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+
+# Set the working directory and list files (This step is manual in Python, make sure you're running this script in the desired directory or specify the path directly in file reading functions)
+
+# Read the TSV file into a DataFrame
+file_name = "GEB0017_571_vs_ICB0004_03CP11_filtered_oncoPanel.snp.tsv"
+data1 = pd.read_csv(file_name, sep='\t', header=0)
+
+# Manipulate 'coordinate' column
+data1['coordinate'] = 'chr' + data1['chromosome'].astype(str) + ':' + data1['position'].astype(str) + '-' + data1['reference_allele'] + '>' + data1['alt_allele']
+
+# Calculate VAF
+data1['VAF'] = (data1['num_alt_obs'] / (data1['num_ref_obs'] + data1['num_alt_obs'])) * 100
+
+# Reorder columns
+cols = ['coordinate'] + [col for col in data1 if col != 'coordinate']
+data = data1[cols]
+
+# Remove duplicates and sort by 'coordinate'
+data = data.drop_duplicates(subset=['coordinate']).sort_values(by=['coordinate'])
+
+# Display the first few rows of the DataFrame
+print(data.head())
+
+```
+
+
 -----
 <div id='id-section3'/>
 

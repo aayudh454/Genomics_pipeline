@@ -323,6 +323,8 @@ docker container rm -f 98b136db5ae0
 
 ### Visualization
 
+**Run wgs_script.py** to visualize various variants.
+
 ```
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -389,6 +391,46 @@ first part is making the coordinates-
 | chr1:54753_T>G    |
 
 ![image](GEB0017_571_SNPs_piechart_intronic.png)
+
+
+***Now visualize the filtered data**
+
+```
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
+
+# Assuming 'filtered_data' is already loaded and processed as per the previous instructions
+
+# Create a pie chart
+plt.figure(figsize=(6, 6))
+filtered_data['annotation'].value_counts().plot.pie(autopct='%1.1f%%', startangle=90)
+plt.title(f"{filtered_data.shape[0]} SNPs")
+plt.ylabel('')  # Hide the y-label
+plt.savefig("GEB0017_571_SNPs_piechart.tiff", format='tiff', dpi=300)
+plt.close()
+
+# Create a bar plot
+plt.figure(figsize=(20, 8))
+ax = sns.barplot(x='gene', y='frequency_of_alt', data=filtered_data, ci=None, palette="tab10", edgecolor='black')
+ax.set_title(f"{filtered_data.shape[0]} SNPs Frequency of Alternate Allele (%)")
+ax.set_ylabel('Frequency of Alternate Allele (%)')
+ax.set_xlabel(None)
+
+# Add text labels for rare_variant, annotation, and clinvar
+for index, row in filtered_data.iterrows():
+    ax.text(index, row['frequency_of_alt'], row['rare_variant'], color='black', ha="center", va="bottom", rotation=90, size=5)
+    ax.text(index, row['frequency_of_alt'] - 5, row['annotation'], color='black', ha="center", va="top", rotation=90, size=3)  # Adjust position as needed
+    if row['clinvar'] != "":
+        ax.text(index, row['frequency_of_alt'] + 5, row['clinvar'], color='red', ha="center", va="bottom", rotation=90, size=4)  # Adjust position as needed
+
+plt.axhline(y=10, color='black', linestyle='--', linewidth=1)  # Threshold line
+plt.xticks(rotation=90)  # Rotate gene names for better visibility
+plt.tight_layout()
+plt.savefig("GEB0017_571_SNPs_barplot.tiff", format='tiff', dpi=300)
+plt.close()
+```
+
 
 -----
 <div id='id-section3'/>

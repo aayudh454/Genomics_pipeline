@@ -440,7 +440,7 @@ ggplot(filtered_data, aes(x = gene, y = frequency_of_alt, fill = gene)) +
   geom_hline(yintercept = 10, linetype = "dashed", color = "black", size = 1)
 dev.off()
 ```
-
+![image](SNPs_piechart.png)
 
 -----
 <div id='id-section3'/>

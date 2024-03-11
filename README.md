@@ -360,7 +360,7 @@ first part is making the coordinates-
 | chr1:54716_C>T    |
 | chr1:54753_T>G    |
 
-
+![image](GEB0017_571_SNPs_piechart_intronic.tiff)
 
 -----
 <div id='id-section3'/>

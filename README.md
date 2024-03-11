@@ -410,21 +410,35 @@ plt.title(f"{data.shape[0]} SNPs")
 plt.ylabel('')  # Hide the y-label
 plt.savefig("GEB0017_571_SNPs_piechart.tiff", format='tiff', dpi=300)
 plt.close()
+```
 
-# Create a bar plot
-plt.figure(figsize=(20, 8))
-ax = sns.barplot(x='gene', y='frequency_of_alt', data=data, ci=None, palette="tab10", edgecolor='black')
-ax.set_title(f"{data.shape[0]} SNPs Frequency of Alternate Allele (%)")
-ax.set_ylabel('Frequency of Alternate Allele (%)')
-ax.set_xlabel(None)
+![image](SNPs_piechart.png)
 
-# Add text labels for rare_variant, annotation, and clinvar
-for index, row in data.iterrows():
-    ax.text(row.name, row['frequency_of_alt'], row['rare_variant'], color='black', ha="center", va="bottom", rotation=90, size=5)
-    ax.text(row.name, row['frequency_of_alt'] - 5, row['annotation'], color='black', ha="center", va="top", rotation=90, size=3)  # Adjust position as needed
-    if row['clinvar'] != "":
-        ax.text
+***R script for barplot***
 
+```
+filtered_data <- read.csv("GEB0017_571_SNPS_Intron_filtered_data.csv")
+
+tiff("SNPs_barplot.tiff", width = 20, height = 8, units = 'in', res = 300)
+ggplot(filtered_data, aes(x = gene, y = frequency_of_alt, fill = gene)) +
+  geom_bar(stat = "identity", position = "dodge", color = "black") +
+  geom_text(aes(label = rare_variant),
+            position = position_dodge(width = 0.9),
+            vjust = 0.5,hjust=-0.2, angle =90,  # Adjust vertical position
+            size = 5, family = "Arial") +
+  geom_text(aes(label = annotation),
+            position = position_dodge(width = 0.9),
+            vjust = 0,hjust = 1,angle = 90,
+            size = 3, family = "Arial")+
+  geom_text(aes(label = clinvar),
+            position = position_dodge(width = 0.9),
+            vjust = 4.5,  # Adjust vertical position
+            size = 4, family = "Arial", color = "red") +
+  labs(title = NULL, x = NULL, y = "Frequency of Alternate Allele (%)") +
+  theme_classic(base_family = "Arial") +
+  guides(fill = FALSE) +
+  geom_hline(yintercept = 10, linetype = "dashed", color = "black", size = 1)
+dev.off()
 ```
 
 

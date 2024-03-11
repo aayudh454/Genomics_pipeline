@@ -351,6 +351,34 @@ data = data.drop_duplicates(subset=['coordinate']).sort_values(by=['coordinate']
 # Display the first few rows of the DataFrame
 print(data.head())
 
+# Create a pie chart based on the 'annotation' column
+percentage_values = data['annotation'].value_counts(normalize=True) * 100
+plt.figure(figsize=(10, 6))
+data['annotation'].value_counts().plot.pie(autopct='%1.1f%%')
+plt.title(f"{len(data)} SNPs")
+plt.ylabel('')
+plt.savefig("GEB0017_571_SNPs_piechart_intronic.png", format='png', dpi=300)
+plt.close()
+
+# Filter the data
+percentage_data = pd.DataFrame(data['annotation'].value_counts(normalize=True) * 100).reset_index()
+percentage_data.columns = ['Annotation', 'Percentage']
+filtered_data = data[~data['annotation'].isin(["intron_variant", "downstream_gene_variant", "upstream_gene_variant", "synonymous_variant"])]
+
+# Identify rare variants and clinical significance
+filtered_data['rare_variant'] = np.where(
+    (~filtered_data['gnomad_genomes_allele_freq'].isna() & (filtered_data['gnomad_genomes_allele_freq'] != ".")) |
+    (~filtered_data['gnomad_exomes_allele_freq'].isna() & (filtered_data['gnomad_exomes_allele_freq'] != ".")),
+    "RV", "")
+
+filtered_data['clinvar'] = np.where(
+    (~filtered_data['clinVar_clinical_significance'].isna() & (filtered_data['clinVar_clinical_significance'] != ".")) |
+    (~filtered_data['clinVar_clinical_significance'].isna() & (filtered_data['clinVar_clinical_significance'] != ".")),
+    "Cl", "")
+
+# Save the filtered data to a CSV file
+filtered_data.to_csv("GEB0017_571_SNPS_Intron_filtered_data.csv", index=False)
+
 ```
 first part is making the coordinates-
 
@@ -360,7 +388,7 @@ first part is making the coordinates-
 | chr1:54716_C>T    |
 | chr1:54753_T>G    |
 
-![image](GEB0017_571_SNPs_piechart_intronic.tiff)
+![image](GEB0017_571_SNPs_piechart_intronic.)
 
 -----
 <div id='id-section3'/>

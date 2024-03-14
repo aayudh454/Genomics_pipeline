@@ -872,3 +872,5 @@ The dataset looks like this----
 | 1          | genotype1 vs genotype 5  | 63.4090346840829   |
 
 
+![image](pre-qual.png)
+

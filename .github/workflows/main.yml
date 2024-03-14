@@ -18,9 +18,8 @@ jobs:
       - name: Setup Pandoc
         uses: pypa/setup-pandoc@v1
         with:
-          pandoc-version: '2.14'  # Specify the version of Pandoc you prefer
+          pandoc-version: '2.14'
 
       - name: Convert README.md to PDF
         run: |
           pandoc README.md -s -o README.pdf
-

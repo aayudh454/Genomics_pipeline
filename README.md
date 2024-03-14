@@ -804,8 +804,7 @@ done
 echo "Processing complete for chromosomes 1-22."
 ```
 
-
-
+Now get statistics for the overlap, calculating Max similarity--------
 
 ```
 #!/usr/bin/env Rscript

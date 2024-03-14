@@ -324,7 +324,9 @@ docker container rm -f 98b136db5ae0
 snpEff: A tool used for annotating variants in VCF files and predicting their effects on genes (e.g., nonsynonymous coding changes, synonymous changes). It uses a database of genomic information to interpret the variants found in a VCF file based on the reference genome specified.
 
 Download databases- 
+
 **1. dbSNP** - ftp://ftp.ncbi.nlm.nih.gov/snp/organisms/human_9606_b150_GRCh37p13/VCF/GATK/common_all_20170710.vcf.gz
+
 **2. gnomad_exomes**- https://hgdownload.soe.ucsc.edu/gbdb/hg19/gnomAD/vcf/
 
 **YOU NEED TO INDEX EVERY DATABASE FILE**

@@ -863,3 +863,13 @@ combined_overlap_stats <- combined_overlap_stats[, c("chromosome", "genotype", "
 write.csv(combined_overlap_stats, "combined_overlap_statistics.csv", row.names = FALSE)
 ```
 
+The dataset looks like this----
+
+| Chromosome | Genotype                 | Overlap Percentage |
+|------------|--------------------------|--------------------|
+| 1          | genotype1 vs genotype 2  | 67.3936635165669   |
+| 1          | genotype1 vs genotype 3  | 62.3376709052826   |
+| 1          | genotype1 vs genotype 4  | 63.1639536226147   |
+| 1          | genotype1 vs genotype 5  | 63.4090346840829   |
+
+

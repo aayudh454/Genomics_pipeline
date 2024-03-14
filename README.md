@@ -764,4 +764,102 @@ this will generate the dataset like this-
 
 ## Chapter 4: WGS variant calling- pre-qualification criteria
 
+In this approach we just choose 10 random populations from 1000 genomes and calculated whats the similarity and eventually whats the similarity. 
+
+```
+#!/bin/bash
+  
+# Loop through chromosomes 1-22
+for chr in {1..22}; do
+    # Define the VCF file name
+    vcf_file="HG01148_Colombian_chr${chr}.vcf.gz"
+    # Define intermediate and output file names
+    extracted_columns="extracted_columns_chr${chr}.txt"
+    filtered_output="filtered_output_chr${chr}.txt"
+    final_output="final_output_chr${chr}.txt"
+    header_file="header.txt"
+    output_file="HG01148_Colombian_IGSR_chr${chr}.txt"
+
+    # Extract columns from the VCF, considering header lines and the 400th sample
+    zcat $vcf_file | awk '{if(NR<=21 || $1 ~ /^#/) print; else print $1,$2,$3,$4,$5,$107,$115,$220,$300,$329,$333,$365,$371,$406,$411}' > $extracted_columns
+
+    # Filter out VCF header lines
+    grep -v "#" $extracted_columns > $filtered_output
+
+    # Remove the first line (column names) from the filtered output
+    tail -n +2 $filtered_output > $final_output
+
+    # Create a new header file
+    echo -e "CHROM\tPOS\tID\tREF\tALT\tGenotype_HG01148" > $header_file
+
+    # Concatenate the new header with the final output
+    cat $header_file $final_output > $output_file
+
+    # Remove intermediate files
+    rm $filtered_output $final_output $extracted_columns
+
+    echo "Processed chromosome $chr."
+done
+
+echo "Processing complete for chromosomes 1-22."
+```
+
+
+
+
+```
+#!/usr/bin/env Rscript
+
+# Initialize a data frame to store combined overlap statistics for all chromosomes
+combined_overlap_stats <- data.frame(chromosome = integer(), genotype = character(), overlap_percentage = numeric(), stringsAsFactors = FALSE)
+
+# Loop through chromosomes 1 to 22
+for(chr_num in 1:22) {
+  file_name <- paste("HG01148_Colombian_IGSR_chr", chr_num, ".txt", sep = "")
+
+  data <- read.table(file_name, header = TRUE, sep = "\t", stringsAsFactors = FALSE, fill = TRUE)
+
+  split_data <- strsplit(as.character(data$CHROM), " ")
+
+  data$CHROM <- sapply(split_data, function(x) x[1])
+  data$POS <- as.integer(sapply(split_data, function(x) x[2]))
+  data$REF <- sapply(split_data, function(x) x[4])
+  data$ALT <- sapply(split_data, function(x) x[5])
+  for(i in 1:10) {
+    data[[paste("Genotype", i, sep = "")]] <- sapply(split_data, function(x) x[5 + i])
+  }
+  data$ID <- NULL
+
+  data$coordinate = gsub(" ", "", paste("chr", data$CHROM, ":", data$POS, "_", data$REF, ">", data$ALT))
+
+  filtered_genotype_datasets <- list()
+
+  for(i in 1:10) {
+    genotype_col_name <- paste("Genotype", i, sep="")
+    genotype_dataset <- data[, c("CHROM", "POS", "REF", "ALT", genotype_col_name, "coordinate")]
+    colnames(genotype_dataset)[5] <- "Genotype"
+    filtered_genotype_datasets[[i]] <- genotype_dataset[genotype_dataset$Genotype != "0|0", ]
+  }
+
+  overlap_stats <- data.frame(genotype = character(), overlap_percentage = numeric(), stringsAsFactors = FALSE)
+
+  for(i in 2:10) {
+    merged <- merge(filtered_genotype_datasets[[1]], filtered_genotype_datasets[[i]], by = "coordinate")
+    overlap_percentage <- (nrow(merged) / nrow(filtered_genotype_datasets[[1]])) * 100
+    overlap_stats <- rbind(overlap_stats, data.frame(genotype = paste("genotype1 vs genotype", i), overlap_percentage = overlap_percentage))
+  }
+
+  # Add chromosome number to the overlap_stats data frame
+  overlap_stats$chromosome <- chr_num
+
+  # Append the current chromosome's stats to the combined data frame
+  combined_overlap_stats <- rbind(combined_overlap_stats, overlap_stats)
+}
+
+# Reorder columns to place 'chromosome' first
+combined_overlap_stats <- combined_overlap_stats[, c("chromosome", "genotype", "overlap_percentage")]
+
+# Save the combined overlap statistics to a single CSV file
+write.csv(combined_overlap_stats, "combined_overlap_statistics.csv", row.names = FALSE)
+```
 

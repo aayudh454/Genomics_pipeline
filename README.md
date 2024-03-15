@@ -321,7 +321,15 @@ to kill the job---
 ```
 docker container rm -f 98b136db5ae0
 ```
-### E) SnpSift and snpEff
+
+
+-----
+<div id='id-section3'/>
+
+
+## Chapter 3: WGS database annotations
+
+### SnpSift and snpEff
 
 snpEff: A tool used for annotating variants in VCF files and predicting their effects on genes (e.g., nonsynonymous coding changes, synonymous changes). It uses a database of genomic information to interpret the variants found in a VCF file based on the reference genome specified.
 
@@ -479,10 +487,10 @@ dev.off()
 ![image](GEB0017_571_SNPs_barplot.png)
 
 -----
-<div id='id-section3'/>
+<div id='id-section4'/>
 
 
-## Chapter 3: WGS qualification (variant calling-2a)
+## Chapter 4: WGS qualification (variant calling-2a)
 
 ![image](WGS_qual_valid.png)
 
@@ -774,10 +782,10 @@ this will generate the dataset like this-
 
 
 -----
-<div id='id-section4'/>
+<div id='id-section5'/>
 
 
-## Chapter 4: WGS variant calling- pre-qualification criteria
+## Chapter 5: WGS variant calling- pre-qualification criteria
 
 In this approach we just choose 10 random populations from 1000 genomes and calculated whats the similarity and eventually whats the similarity. 
 

@@ -340,7 +340,7 @@ root@ip-10-180-11-166:/data/home/aayudh-das/sop_test/results/variants#
 <div id='id-section3'/>
 
 
-## Chapter 3: WGS database annotations
+## Chapter 3:  WGS annnotations with databases (SnpSift and snpEff)
 
 ### SnpSift and snpEff
 

@@ -376,6 +376,11 @@ bgzip -dc GEB_0015_43A_vs_ICB0004_02CP11_SNPs.vcf.gz |
 ```
 zcat testdbsnp_gnomadExomes_genomes_SNPs.vcf.gz | head -n 475
 ```
+**better code**
+```
+zcat testdbsnp_gnomadExomes_genomes_SNPs.vcf.gz | grep -Ev '^##' | less
+```
+
 
 ```
 # snpEff step run on both Strelka2 SNV and INDEL outputs ##########################

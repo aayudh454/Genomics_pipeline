@@ -5,7 +5,7 @@
 
 * [Page 2: 2023-30-11](#id-section2). Chapter 2: WGS variant calling pipeline (Fastp, bwa & strelka2)
 
-* [Page 3: 2024-30-03](#id-section3). Chapter 3: WGS database annnotations (snpeff)
+* [Page 3: 2024-30-03](#id-section3). Chapter 3: WGS annnotations with databases (snpeff)
 
 * [Page 4: 2024-15-01](#id-section4). Chapter 4: WGS variant calling qualification
 

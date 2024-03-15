@@ -381,10 +381,15 @@ zcat testdbsnp_gnomadExomes_genomes_SNPs.vcf.gz | head -n 475
 zcat testdbsnp_gnomadExomes_genomes_SNPs.vcf.gz | grep -Ev '^##' | less
 ```
 
+**snpEff step run after SnpSift**
 
 ```
+#!/bin/bash
+
 # snpEff step run on both Strelka2 SNV and INDEL outputs ##########################
-snpEff <genome> <vcf input>
+  
+        java -Xmx8g -jar /data/home/aayudh-das/snpEff/snpEff.jar hg19 testdbsnp_gnomadExomes_genomes_SNPs.vcf.gz |
+        bgzip -c > testdbsnp_gnomadExomes_genomes_snpEff_SNPs.vcf.gz
 ```
 
 

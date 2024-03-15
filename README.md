@@ -1,4 +1,4 @@
-# Genomics_pipeline
+# Computational Biology & Genomics pipelines by Aayudh
 
 ## Table of contents    
 * [Page 1: 2023-22-07](#id-section1). Chapter 1: CRISPR Knockout validation (Amplicon sequencing) 

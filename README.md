@@ -375,6 +375,18 @@ bgzip -dc GEB_0015_43A_vs_ICB0004_02CP11_SNPs.vcf.gz |
 
 ```
 
+**1.** bgzip -dc GEB_0015_43A_vs_ICB0004_02CP11_SNPs.vcf.gz |: This command decompresses the gzipped VCF file (GEB_0015_43A_vs_ICB0004_02CP11_SNPs.vcf.gz) that contains SNP variant calls. bgzip is part of the htslib package, and -dc flags decompress the file to standard output (stdout), piping (|) the output to the next command without creating a temporary file.
+
+**2.** java -Xmx8g -jar /data/home/aayudh-das/snpEff/SnpSift.jar annotate -name dbsnp_ dbSNP.vcf.gz - |: The decompressed VCF data is piped into SnpSift's annotate command, which adds annotation information from the dbSNP database (dbSNP.vcf.gz). The -Xmx8g option specifies that Java can use up to 8 gigabytes of memory for the process, ensuring enough resources are available. The -name dbsnp_ option prefixes the annotation names with "dbsnp_" in the output file.
+
+**3.** Following the first annotation, two more annotations are applied in a similar manner: one from the gnomAD exomes dataset (gnomad.exomes.r2.0.2.sites.vcf.gz) and one from the gnomAD genomes dataset (gnomad.genomes.r2.0.2.sites.w_AF.vcf.gz). These datasets provide allele frequency information among other metrics from a large number of sequenced exomes and genomes, respectively. The annotations are prefixed with gnomad_exomes_ and gnomad_genomes_ in the output.
+
+**4.** bgzip -c > testdbsnp_gnomadExomes_genomes_SNPs.vcf.gz: The annotated VCF stream is then compressed using bgzip with the -c option to write the output to stdout, which is redirected to a new gzipped file named testdbsnp_gnomadExomes_genomes_SNPs.vcf.gz. This file now contains the original SNP data with added annotations from dbSNP, gnomAD exomes, and gnomAD genomes.
+
+**5.** java -Xmx8g -jar /data/home/aayudh-das/snpEff/snpEff.jar hg19 testdbsnp_gnomadExomes_genomes_SNPs.vcf.gz |: This command runs SnpEff, which is a genetic variant annotation and effect prediction tool. It uses the previously annotated and gzipped VCF file as input, and hg19 refers to the human genome build 19, which is used as the reference for annotation. SnpEff predicts the effects these SNPs have on genes, such as nonsynonymous changes, synonymous changes, stop gains/losses, etc.
+
+**6.** bgzip -c > testdbsnp_gnomadExomes_genomes_snpEff_SNPs.vcf.gz: Finally, the output from SnpEff, which includes both the original annotations and the new effect predictions, is compressed back into a gzipped VCF file named testdbsnp_gnomadExomes_genomes_snpEff_SNPs.vcf.gz.
+
 **view output vcf.gz**
 
 ```

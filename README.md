@@ -342,10 +342,6 @@ root@ip-10-180-11-166:/data/home/aayudh-das/sop_test/results/variants#
 
 ## Chapter 3:  WGS annnotations with databases (SnpSift and snpEff)
 
-### SnpSift and snpEff
-
-snpEff: A tool used for annotating variants in VCF files and predicting their effects on genes (e.g., nonsynonymous coding changes, synonymous changes). It uses a database of genomic information to interpret the variants found in a VCF file based on the reference genome specified.
-
 Download databases- 
 
 **1. dbSNP** - ftp://ftp.ncbi.nlm.nih.gov/snp/organisms/human_9606_b150_GRCh37p13/VCF/GATK/common_all_20170710.vcf.gz
@@ -360,7 +356,9 @@ other libraries are - **3. gnomad_genomes** , **4. esp6500**, **5. clinvar**, **
 tabix gnomad.genomes.r2.0.2.sites.w_AF.vcf.gz
 ```
 
-#### SnpSift & snpEff
+### SnpSift & snpEff
+
+snpEff: A tool used for annotating variants in VCF files and predicting their effects on genes (e.g., nonsynonymous coding changes, synonymous changes). It uses a database of genomic information to interpret the variants found in a VCF file based on the reference genome specified.
 
 ```
 #!/bin/bash
@@ -404,7 +402,7 @@ zcat testdbsnp_gnomadExomes_genomes_SNPs.vcf.gz | head -n 475
 zcat testdbsnp_gnomadExomes_genomes_SNPs.vcf.gz | grep -Ev '^##' | less
 ```
 
-#### Split bi-allelic normalization
+### Split bi-allelic 
 
 The goal of the provided commands is to normalize genetic variant data from VCF files containing SNPs and INDELs to ensure that all variants are represented in a standardized, bi-allelic form. This normalization process involves splitting multi-allelic variant entries into separate bi-allelic entries, making the data easier to analyze and interpret. The normalized data is then saved into new, separate VCF files for SNPs and INDELs, facilitating subsequent genetic analyses and comparisons.
 

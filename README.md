@@ -404,6 +404,23 @@ zcat testdbsnp_gnomadExomes_genomes_SNPs.vcf.gz | head -n 475
 zcat testdbsnp_gnomadExomes_genomes_SNPs.vcf.gz | grep -Ev '^##' | less
 ```
 
+#### Split bi-allelic normalization
+
+The goal of the provided commands is to normalize genetic variant data from VCF files containing SNPs and INDELs to ensure that all variants are represented in a standardized, bi-allelic form. This normalization process involves splitting multi-allelic variant entries into separate bi-allelic entries, making the data easier to analyze and interpret. The normalized data is then saved into new, separate VCF files for SNPs and INDELs, facilitating subsequent genetic analyses and comparisons.
+
+```
+#!/bin/bash
+
+cat GEB_0015_43A_snpEff_SNPs.vcf.gz | bcftools norm -m -any -o bi_allelics_GEB_0015_43A_SNPs.vcf.gz
+cat GEB_0015_43A_snpeff_INDELs.vcf.gz | bcftools norm -m -any -o bi_allelics_GEB_0015_43A-INDELs.vcf.gz
+```
+cat GEB_0015_43A_snpEff_SNPs.vcf.gz: This command uses cat to read the contents of a gzipped (compressed) VCF file containing SNP variants that have been annotated by snpEff (a genetic variant annotation and effect prediction tool).
+| bcftools norm -m -any -o bi_allelics_GEB_0015_43A_SNPs.vcf.gz: The output from cat is piped (|) into bcftools norm, which is a command from the bcftools suite, a set of utilities for variant calling and manipulating VCF/BCF files. The norm command is used here to normalize the variants, with the -m -any options specifying that multi-allelic variants should be split into multiple bi-allelic entries. The -o option specifies the output file name for the resulting bi-allelic SNP variants.
+Processing INDELs:
+
+cat GEB_0015_43A_snpeff_INDELs.vcf.gz: Similar to the first command, this reads a gzipped VCF file, but this time the file contains INDEL variants annotated by snpEff.
+| bcftools norm -m -any -o bi_allelics_GEB_0015_43A-INDELs.vcf.gz: Again, the output is piped into bcftools norm for normalization. The same options are used to split multi-allelic INDELs into bi-allelic entries, and the output is saved to a specified file for bi-allelic INDEL variants.
+
 ### Visualization
 
 **Run wgs_script.py** to visualize various variants.

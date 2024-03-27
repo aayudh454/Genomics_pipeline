@@ -369,6 +369,7 @@ bgzip -dc GEB_0015_43A_vs_ICB0004_02CP11_SNPs.vcf.gz |
         java -Xmx8g -jar /data/home/aayudh-das/snpEff/SnpSift.jar annotate -name dbsnp_ dbSNP.vcf.gz - |
         java -Xmx8g -jar /data/home/aayudh-das/snpEff/SnpSift.jar annotate -name gnomad_exomes_ gnomad.exomes.r2.0.2.sites.vcf.gz - |
         java -Xmx8g -jar /data/home/aayudh-das/snpEff/SnpSift.jar annotate -name gnomad_genomes_ gnomad.genomes.r2.0.2.sites.w_AF.vcf.gz - |
+        awk '{gsub(/\chr/, "")}1' |
         java -Xmx8g -jar /data/home/aayudh-das/snpEff/SnpSift.jar annotate -name esp6500_ ESP6500SI-V2-SSA137.GRCh38-liftover.snps_indels_fix.vcf.gz - |
         java -Xmx8g -jar /data/home/aayudh-das/snpEff/SnpSift.jar annotate -name clinVar_ clinvar_20230604.vcf.gz - |
         java -Xmx8g -jar /data/home/aayudh-das/snpEff/SnpSift.jar annotate -name COSMIC_ cosmic91_hg19.vcf.gz - |

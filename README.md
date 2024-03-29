@@ -622,7 +622,7 @@ dev.off()
 ![image](GEB0017_571_SNPs_barplot.png)
 
 -----
-<div id='id-section5'/>
+<div id='id-section6'/>
 
 
 ## Chapter 6: WGS qualification (variant calling-2a)

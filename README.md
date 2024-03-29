@@ -420,6 +420,60 @@ Processing INDELs:
 cat GEB_0015_43A_snpeff_INDELs.vcf.gz: Similar to the first command, this reads a gzipped VCF file, but this time the file contains INDEL variants annotated by snpEff.
 | bcftools norm -m -any -o bi_allelics_GEB_0015_43A-INDELs.vcf.gz: Again, the output is piped into bcftools norm for normalization. The same options are used to split multi-allelic INDELs into bi-allelic entries, and the output is saved to a specified file for bi-allelic INDEL variants.
 
+### Remove blacklisted rsID
+
+**vcf_rmBlacklist.py**
+```
+# run with:
+# python vcf_rmBlacklist.py input.vcf output.vcf --rsids rs708776 rs6667260 rs2291591 rs10954213 rs1053874
+
+import argparse
+
+def filter_vcf(input_file, output_file, rsid_list):
+    with open(input_file, 'r') as f_in, open(output_file, 'w') as f_out:
+        for line in f_in:
+            if line.startswith('#'):
+                # Write header lines as is
+                f_out.write(line)
+            else:
+                fields = line.strip().split('\t')
+                info_field = fields[7]
+
+                # Check if any of the rsIDs are present in the ID field
+                if any(rsid in fields[2] for rsid in rsid_list):
+                    # Remove entries in INFO field that start with "clinVar_"
+                    info_field = ';'.join(
+                        [entry for entry in info_field.split(';') if not entry.startswith('clinVar_')]
+                    )
+                    fields[7] = info_field
+
+                    # Write modified line to output file
+                    f_out.write('\t'.join(fields) + '\n')
+                else:
+                    f_out.write(line)
+
+def main():
+    parser = argparse.ArgumentParser(description='VCF variant filter')
+    parser.add_argument('input_file', help='Input VCF file path')
+    parser.add_argument('output_file', help='Output VCF file path')
+    parser.add_argument('--rsids', nargs='+', help='List of rsIDs to search')
+    args = parser.parse_args()
+
+    filter_vcf(args.input_file, args.output_file, args.rsids)
+
+if __name__ == '__main__':
+    main()
+```
+Now run---
+
+```
+#!/bin/bash
+
+python3 vcf_rmBlacklist.py bi_allelics_GEB_0015_43A_SNPs.vcf bi_allelics_GEB_0015_43A_SNPs_rsID.vcf --rsids rs708776 rs6667260 rs2291591 rs10954213 rs1053874 rs147889095
+
+python3 vcf_rmBlacklist.py bi_allelics_GEB_0015_43A-INDELs.vcf bi_allelics_GEB_0015_43A_INDELs_rsID.vcf --rsids rs708776 rs6667260 rs2291591 rs10954213 rs1053874 rs147889095
+```
+
 ### Visualization
 
 **Run wgs_script.py** to visualize various variants.

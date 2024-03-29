@@ -492,7 +492,113 @@ python3 vcf_rmBlacklist.py bi_allelics_GEB_0015_43A-INDELs.vcf bi_allelics_GEB_0
 
 ## Chapter 4: Clinvar, MissionBio and other filtering
 
+```
+#!/bin/bash
+  
+# add clinVar filt col
 
+python3 vcf_addClinVar_filtCol.py bi_allelics_GEB_0015_43A_SNPs_rsID.vcf GEB_0015_43A_SNPs_clinvar.vcf
+
+python3 vcf_addClinVar_filtCol.py bi_allelics_GEB_0015_43A-INDELs.vcf GEB_0015_43A_INDELs_clinvar.vcf
+
+# add clinVar pathology filt col
+python3 vcf_addClinVarPathology_filtCol.py GEB_0015_43A_SNPs_clinvar.vcf GEB_0015_43A_SNPs_clinvar2.vcf
+
+python3 vcf_addClinVarPathology_filtCol.py GEB_0015_43A_INDELs_clinvar.vcf GEB_0015_43A_INDELs_clinvar2.vcf
+~                                                                                                               
+```
+
+**vcf_addClinVar_filtCol.py**
+
+```
+#!/usr/bin/env python3
+
+import vcf
+import argparse
+
+# import the argparse library for parsing command-line arguments
+import argparse
+# import the PyVCF library for reading and writing VCF files
+import vcf
+
+# parse command-line arguments
+parser = argparse.ArgumentParser()
+parser.add_argument("input_vcf_file", help="path to input VCF file")
+parser.add_argument("output_vcf_file", help="path to output VCF file")
+args = parser.parse_args()
+
+# create a VCF Reader object for the input file
+vcf_reader = vcf.Reader(open(args.input_vcf_file, 'r'))
+
+# add the new "clinVar" field to the header of the output file
+vcf_reader.infos["clinVar"] = vcf.parser._Info(id="clinVar_anno", num=1, type="String", desc="Variant contains a clinVar annotation", source=None, version=None)
+
+# create a VCF Writer object for the output file, using the header from the input file
+vcf_writer = vcf.Writer(open(args.output_vcf_file, 'w'), vcf_reader)
+
+# loop through each variant in the VCF file
+for record in vcf_reader:
+    # get the INFO dictionary for the current variant
+    info_dict = record.INFO
+    # check if any keys in the INFO dictionary start with "clinVar_"
+    clinVar_present = any(key.startswith("clinVar_") for key in info_dict.keys())
+    # add the "clinVar" field to the INFO dictionary with value "TRUE" or "FALSE"
+    if clinVar_present:
+        info_dict["clinVar_anno"] = "TRUE"
+    else:
+        info_dict["clinVar_anno"] = "FALSE"
+    # update the record's INFO dictionary
+    record.INFO = info_dict
+    # write the updated record to the output file
+    vcf_writer.write_record(record)
+
+# Close input and output files
+vcf_reader._reader.close()
+vcf_writer.close()
+```
+
+**vcf_addClinVarPathology_filtCol.py**
+
+```
+#!/usr/bin/env python3
+
+import argparse
+import vcf
+
+# Define command line arguments
+parser = argparse.ArgumentParser()
+parser.add_argument("input_vcf", help="path to input VCF file")
+parser.add_argument("output_vcf", help="path to output VCF file")
+args = parser.parse_args()
+
+# Open input VCF file and create output VCF file
+vcf_reader = vcf.Reader(open(args.input_vcf, 'r'))
+vcf_writer = vcf.Writer(open(args.output_vcf, 'w'), vcf_reader)
+
+
+# add the new "clinVar" field to the header of the output file
+vcf_reader.infos["clinVar"] = vcf.parser._Info(id="clinVar_pathology", num=1, type="String", desc="Variant is associated with a disease", source=None, version=None)
+
+# create a VCF Writer object for the output file, using the header from the input file
+vcf_writer = vcf.Writer(open(args.output_vcf, 'w'), vcf_reader)
+
+# Loop over variants and check clinVar_CLNSIG INFO field
+for record in vcf_reader:
+    clnsig = record.INFO.get('clinVar_CLNSIG')
+    if clnsig:
+        clnsig_lower = [x.lower() for x in clnsig]
+        if 'pathogenic' in clnsig_lower or 'likely_pathogenic' in clnsig_lower or 'risk_factor' in clnsig_lower:
+            record.INFO['clinVar_pathology'] = 'TRUE'
+        else:
+            record.INFO['clinVar_pathology'] = 'FALSE'
+    else:
+        record.INFO['clinVar_pathology'] = 'FALSE'
+    vcf_writer.write_record(record)
+
+# Close input and output files
+vcf_reader._reader.close()
+vcf_writer.close()
+```
 
 -----
 <div id='id-section5'/>

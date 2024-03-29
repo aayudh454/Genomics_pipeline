@@ -7,7 +7,7 @@
 
 * [Page 3: 2024-30-03](#id-section3). Chapter 3: WGS annnotations with databases (SnpSift and snpEff)
 
-* [Page 4: 2024-30-03](#id-section4). Chapter 4: WGS annnotations with databases (SnpSift and snpEff)
+* [Page 4: 2024-30-03](#id-section4). Chapter 4: Clinvar, MissionBio and other filtering
 
 * [Page 5: 2024-15-01](#id-section5). Chapter 5: WGS variant calling qualification
 
@@ -476,6 +476,24 @@ python3 vcf_rmBlacklist.py bi_allelics_GEB_0015_43A_SNPs.vcf bi_allelics_GEB_001
 python3 vcf_rmBlacklist.py bi_allelics_GEB_0015_43A-INDELs.vcf bi_allelics_GEB_0015_43A_INDELs_rsID.vcf --rsids rs708776 rs6667260 rs2291591 rs10954213 rs1053874 rs147889095
 ```
 
+
+
+
+
+
+
+
+
+-----
+<div id='id-section4'/>
+
+
+## Chapter 4: Clinvar, MissionBio and other filtering
+
+
+
+
+-----
 ### Visualization
 
 **Run wgs_script.py** to visualize various variants.
@@ -598,10 +616,10 @@ dev.off()
 ![image](GEB0017_571_SNPs_barplot.png)
 
 -----
-<div id='id-section4'/>
+<div id='id-section5'/>
 
 
-## Chapter 4: WGS qualification (variant calling-2a)
+## Chapter 5: WGS qualification (variant calling-2a)
 
 ![image](WGS_qual_valid.png)
 

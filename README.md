@@ -9,9 +9,11 @@
 
 * [Page 4: 2024-30-03](#id-section4). Chapter 4: Clinvar, MissionBio and other filtering
 
-* [Page 5: 2024-15-01](#id-section5). Chapter 5: WGS variant calling qualification
+* [Page 5: 2024-30-03](#id-section5). Chapter 5: Visualization of Results
 
-* [Page 6: 2024-20-02](#id-section6). Chapter 6: WGS variant calling- pre-qualification criteria
+* [Page 6: 2024-15-01](#id-section6). Chapter 5: WGS variant calling qualification
+
+* [Page 7: 2024-20-02](#id-section7). Chapter 6: WGS variant calling- pre-qualification criteria
 
 
 ------
@@ -492,7 +494,11 @@ python3 vcf_rmBlacklist.py bi_allelics_GEB_0015_43A-INDELs.vcf bi_allelics_GEB_0
 
 
 
+-----
+<div id='id-section5'/>
 
+
+## Chapter 5: Visualization of Results
 -----
 ### Visualization
 
@@ -619,7 +625,7 @@ dev.off()
 <div id='id-section5'/>
 
 
-## Chapter 5: WGS qualification (variant calling-2a)
+## Chapter 6: WGS qualification (variant calling-2a)
 
 ![image](WGS_qual_valid.png)
 

@@ -11,9 +11,9 @@
 
 * [Page 5: 2024-30-03](#id-section5). Chapter 5: Visualization of Results
 
-* [Page 6: 2024-15-01](#id-section6). Chapter 5: WGS variant calling qualification
+* [Page 6: 2024-15-01](#id-section6). Chapter 6: WGS variant calling qualification
 
-* [Page 7: 2024-20-02](#id-section7). Chapter 6: WGS variant calling- pre-qualification criteria
+* [Page 7: 2024-20-02](#id-section7). Chapter 7: WGS variant calling- pre-qualification criteria
 
 
 ------

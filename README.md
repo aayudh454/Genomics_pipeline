@@ -1066,10 +1066,10 @@ this will generate the dataset like this-
 
 
 -----
-<div id='id-section5'/>
+<div id='id-section7'/>
 
 
-## Chapter 5: WGS variant calling- pre-qualification criteria
+## Chapter 7: WGS variant calling- pre-qualification criteria
 
 In this approach we just choose 10 random populations from 1000 genomes and calculated whats the similarity and eventually whats the similarity. 
 

@@ -610,7 +610,7 @@ vcf_writer.close()
 # add missionBio myeloid gene filt col
 REGIONS="/data/home/aayudh-das/sop_test/tapestri_myeloid_v2_sorted.bed.gz"
 FLAG="MBGENES"
-cat GEB_0015_43A_SNPs_clinvar2.vcf |
+cat GEB_0015_43A_SNPs_clinvar2.vcf | grep -Ev '^Un_|_random' |
   bcftools annotate \
     -a ${REGIONS} \
     -h <(echo "##INFO=<ID=${FLAG},Number=1,Type=String,Description=\"Overlaps MissionBio myeloid disease genes\">") \
@@ -627,7 +627,7 @@ cat GEB_0015_43A_SNPs_clinvar2.vcf |
 # add missionBio myeloid gene filt col
 REGIONS="/data/home/aayudh-das/sop_test/tapestri_myeloid_v2_sorted.bed.gz"
 FLAG="MBGENES"
-cat GEB_0015_43A_INDELs_clinvar2.vcf |
+cat GEB_0015_43A_INDELs_clinvar2.vcf | grep -Ev '^Un_|_random' |
   bcftools annotate \
     -a ${REGIONS} \
     -h <(echo "##INFO=<ID=${FLAG},Number=1,Type=String,Description=\"Overlaps MissionBio myeloid disease genes\">") \

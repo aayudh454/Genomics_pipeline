@@ -494,6 +494,8 @@ python3 vcf_rmBlacklist.py bi_allelics_GEB_0015_43A-INDELs.vcf bi_allelics_GEB_0
 
 ###  clinVar
 
+For all variants, enhance the ClinVar-based pathology column by integrating a column that specifies disease significance. Python based scripts vcf_addClinVarPathology_filtCol.py and vcf_addClinVar_filtCol.py has been used to ass the ClinVar filter column and pathology column. 
+
 ```
 #!/bin/bash
   
@@ -603,6 +605,11 @@ vcf_writer.close()
 ```
 
 ### missionBio
+
+Annotation of the SNP and INDEL variant files with information about their overlap with a predefined set of myeloid disease-related genes were performed. Two files tapestri_myeloid_v2_submitted_nochr.tsv and tapestri_myeloid_v2_submitted_grc42_genes_nochr.bed was used for the gene list.
+Non-canonical chromosomes were first filtered out using bcftools, then annotated variants that overlapped with MBGENES=TRUE and those that did not overlap with MBGENES=FALSE, aiming to facilitate the identification of potentially relevant genetic variants for further analysis in the context of myeloid diseases. 
+The final filtering step seemed to have been either superfluous or incorrectly specified.
+
 
 ```
 #!/bin/bash

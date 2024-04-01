@@ -492,6 +492,8 @@ python3 vcf_rmBlacklist.py bi_allelics_GEB_0015_43A-INDELs.vcf bi_allelics_GEB_0
 
 ## Chapter 4: Clinvar, MissionBio and other filtering
 
+###  clinVar
+
 ```
 #!/bin/bash
   
@@ -599,6 +601,47 @@ for record in vcf_reader:
 vcf_reader._reader.close()
 vcf_writer.close()
 ```
+
+### missionBio
+
+```
+#!/bin/bash
+  
+# add missionBio myeloid gene filt col
+REGIONS="/data/home/aayudh-das/sop_test/tapestri_myeloid_v2_sorted.bed.gz"
+FLAG="MBGENES"
+cat GEB_0015_43A_SNPs_clinvar2.vcf |
+  bcftools annotate \
+    -a ${REGIONS} \
+    -h <(echo "##INFO=<ID=${FLAG},Number=1,Type=String,Description=\"Overlaps MissionBio myeloid disease genes\">") \
+    -c CHROM,FROM,TO \
+    --mark-sites +${FLAG}=TRUE \
+    --no-version |
+    bcftools annotate \
+    -a ${REGIONS} \
+    -c CHROM,FROM,TO \
+    --mark-sites -${FLAG}=FALSE \
+    --no-version |
+    grep -Ev "ID=${FLAG}=" > GEB_0015_43A_SNPs_missionBio.vcf
+
+# add missionBio myeloid gene filt col
+REGIONS="/data/home/aayudh-das/sop_test/tapestri_myeloid_v2_sorted.bed.gz"
+FLAG="MBGENES"
+cat GEB_0015_43A_INDELs_clinvar2.vcf |
+  bcftools annotate \
+    -a ${REGIONS} \
+    -h <(echo "##INFO=<ID=${FLAG},Number=1,Type=String,Description=\"Overlaps MissionBio myeloid disease genes\">") \
+    -c CHROM,FROM,TO \
+    --mark-sites +${FLAG}=TRUE \
+    --no-version |
+    bcftools annotate \
+    -a ${REGIONS} \
+    -c CHROM,FROM,TO \
+    --mark-sites -${FLAG}=FALSE \
+    --no-version |
+    grep -Ev "ID=${FLAG}=" > GEB_0015_43A_INDELs_missionBio.vcf
+```
+
 
 -----
 <div id='id-section5'/>

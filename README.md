@@ -610,6 +610,16 @@ Annotation of the SNP and INDEL variant files with information about their overl
 Non-canonical chromosomes were first filtered out using bcftools, then annotated variants that overlapped with MBGENES=TRUE and those that did not overlap with MBGENES=FALSE, aiming to facilitate the identification of potentially relevant genetic variants for further analysis in the context of myeloid diseases. 
 The final filtering step seemed to have been either superfluous or incorrectly specified.
 
+#### A) Mission Bio Genes
+
+**You need to convert tsv to bed.gz**
+
+```
+#genes for missionbio
+sort -k1,1 -k2,2n /data/home/aayudh-das/sop_test/tapestri_myeloid_v2_submitted_grc42_genes_nochr.bed > /data/home/aayudh-das/sop_test/tapestri_myeloid_v2_sorted.bed
+bgzip /data/home/aayudh-das/sop_test/tapestri_myeloid_v2_sorted.bed
+tabix -p bed /data/home/aayudh-das/sop_test/tapestri_myeloid_v2_sorted.bed.gz
+```
 
 ```
 #!/bin/bash
@@ -648,6 +658,62 @@ cat GEB_0015_43A_INDELs_clinvar2.vcf | grep -Ev '^Un_|_random' |
     --no-version |
     grep -Ev "ID=${FLAG}=" > GEB_0015_43A_INDELs_missionBio.vcf
 ```
+
+#### B) Mission Bio Exons
+
+**You need to convert tsv to bed.gz**
+
+```
+#exons for missionbio
+awk 'BEGIN{OFS="\t"} {print $1, $2, $3}' tapestri_myeloid_v2_submitted_nochr.tsv > tapestri_myeloid_v2_submitted_nochr.bed
+sort -k1,1 -k2,2n tapestri_myeloid_v2_submitted_nochr.bed > tapestri_myeloid_v2_sorted.bed
+bgzip -c tapestri_myeloid_v2_sorted.bed > tapestri_myeloid_v2_submitted_nochr.bed.gz
+tabix -p bed tapestri_myeloid_v2_submitted_nochr.bed.gz
+```
+
+Now run the script---
+
+
+```
+#!/bin/bash
+  
+# add missionBio myeloid gene filt col
+REGIONS="/data/home/aayudh-das/sop_test/tapestri_myeloid_v2_submitted_nochr.bed.gz"
+FLAG="MBEXONS"
+cat GEB_0015_43A_SNPs_missionBio.vcf | grep -Ev '^Un_|_random' |
+  bcftools annotate \
+    -a ${REGIONS} \
+    -h <(echo "##INFO=<ID=${FLAG},Number=1,Type=String,Description=\"Overlaps MissionBio myeloid disease exons\">") \
+    -c CHROM,FROM,TO \
+    --mark-sites +${FLAG}=TRUE \
+    --no-version |
+    bcftools annotate \
+    -a ${REGIONS} \
+    -c CHROM,FROM,TO \
+    --mark-sites -${FLAG}=FALSE \
+    --no-version |
+    grep -Ev "ID=${FLAG}=" > GEB_0015_43A_SNPs_missionBio_final.vcf
+
+# add missionBio myeloid gene filt col
+REGIONS="/data/home/aayudh-das/sop_test/tapestri_myeloid_v2_submitted_nochr.bed.gz"
+FLAG="MBEXONS"
+cat GEB_0015_43A_INDELs_missionBio.vcf | grep -Ev '^Un_|_random' |
+  bcftools annotate \
+    -a ${REGIONS} \
+    -h <(echo "##INFO=<ID=${FLAG},Number=1,Type=String,Description=\"Overlaps MissionBio myeloid disease exons\">") \
+    -c CHROM,FROM,TO \
+    --mark-sites +${FLAG}=TRUE \
+    --no-version |
+    bcftools annotate \
+    -a ${REGIONS} \
+    -c CHROM,FROM,TO \
+    --mark-sites -${FLAG}=FALSE \
+    --no-version |
+    grep -Ev "ID=${FLAG}=" > GEB_0015_43A_INDELs_missionBio_final.vcf
+```
+
+
+
 
 
 -----

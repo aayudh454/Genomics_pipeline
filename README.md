@@ -7,7 +7,7 @@
 
 * [Page 3: 2024-30-03](#id-section3). Chapter 3: WGS annnotations with databases (SnpSift and snpEff)
 
-* [Page 4: 2024-30-03](#id-section4). Chapter 4: Clinvar, MissionBio and other filtering
+* [Page 4: 2024-30-03](#id-section4). Chapter 4: Clinvar and MissionBio incorporation
 
 * [Page 5: 2024-30-03](#id-section5). Chapter 5: Visualization of Results
 
@@ -490,7 +490,7 @@ python3 vcf_rmBlacklist.py bi_allelics_GEB_0015_43A-INDELs.vcf bi_allelics_GEB_0
 <div id='id-section4'/>
 
 
-## Chapter 4: Clinvar, MissionBio and other filtering
+## Chapter 4: Clinvar and MissionBio incorporation
 
 ###  clinVar
 

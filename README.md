@@ -755,6 +755,85 @@ rm GEB_0015_43A_SNPs_missionBio_ClinVar_Cosmic_split_function_DEPMAP.vcf
 rm GEB_0015_43A_SNPs_missionBio_ClinVar_Cosmic_split_function_DEPMAP_cosGene.vcf
 ```
 
+Script to add clinVar term filt col **vcf_addClinVarTerm_filtCol.py**
+
+```
+#!/usr/bin/env python3
+
+
+import argparse
+import vcf
+
+# Define command-line arguments
+parser = argparse.ArgumentParser(description='Add clinVar_term flag to a VCF file based on CLNDN field')
+parser.add_argument('input_vcf', help='input VCF file')
+parser.add_argument('output_vcf', help='output VCF file')
+
+# Define list of strings to search for
+search_terms = ['leuk', 'myelo', 'lymphom', 'hemato']
+
+# Open input VCF file and create output VCF file
+with open(parser.parse_args().input_vcf, 'r') as input_file, open(parser.parse_args().output_vcf, 'w') as output_file:
+    # Parse VCF file with PyVCF
+    vcf_reader = vcf.Reader(input_file)
+    # Add new INFO field to header
+    vcf_reader.infos['clinVar_term'] = vcf.parser._Info('clinVar_term', '1', 'String', 'Flag for clinVar terms', 'None', 'None')
+    # Write modified header to output file
+    vcf_writer = vcf.Writer(output_file, vcf_reader)
+    # Loop through each record in input VCF file
+    for record in vcf_reader:
+        # Check if CLNDN field contains any partial matches to the search terms
+        clinvar_terms = [term for term in search_terms if any(term in clndn.lower() for clndn in record.INFO.get('clinVar_CLNDN', []))]
+        # Add new flag to INFO field based on search results
+        if clinvar_terms:
+            record.INFO['clinVar_term'] = 'TRUE'
+        else:
+            record.INFO['clinVar_term'] = 'FALSE'
+        # Write modified record to output file
+        vcf_writer.write_record(record)
+```
+
+Script to add allele freq. filter col **vcf_addAF_filtCol.py**
+
+```
+#!/usr/bin/env python3
+  
+import argparse
+import vcf
+
+parser = argparse.ArgumentParser(description='Filter variant VCF file based on allele frequencies')
+parser.add_argument('input_file', help='input VCF file')
+parser.add_argument('output_file', help='output VCF file')
+args = parser.parse_args()
+
+def check_allele_frequencies(record):
+    dbsnp_caf = record.INFO.get('DBSNP_CAF')
+    if dbsnp_caf is not None:
+        dbsnp_caf = [float(x) for x in dbsnp_caf[1:] if x is not None and x != '.']
+        if any(x > 0.01 for x in dbsnp_caf):
+            return False
+
+    gnomad_genomes_af = record.INFO.get('gnomad_genomes_AF')
+    if gnomad_genomes_af is not None:
+        gnomad_genomes_af = [float(x) for x in gnomad_genomes_af if x is not None and x != '.']
+        if any(x > 0.01 for x in gnomad_genomes_af):
+            return False
+
+    gnomad_exomes_af = record.INFO.get('gnomad_exomes_AF')
+    if gnomad_exomes_af is not None:
+        gnomad_exomes_af = [float(x) for x in gnomad_exomes_af if x is not None and x != '.']
+        if any(x > 0.01 for x in gnomad_exomes_af):
+            return False
+
+    esp6500_maf = record.INFO.get('esp6500_MAF')
+    if esp6500_maf is not None:
+        esp6500_maf = [float(x) for x in esp6500_maf if x is not None and x != '.']
+        if any(x > 1 for x in esp6500_maf):
+            return False
+
+    return True
+```
+
 
 
 -----

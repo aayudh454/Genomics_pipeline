@@ -9,12 +9,13 @@
 
 * [Page 4: 2024-30-03](#id-section4). Chapter 4: Clinvar and MissionBio incorporation
 
-* [Page 5: 2024-30-03](#id-section5). Chapter 5: Visualization of Results
+* [Page 4: 2024-30-03](#id-section5). Chapter 5: COSMIC, DEPMAP, ONCO-PANEL incorporation
 
-* [Page 6: 2024-15-01](#id-section6). Chapter 6: WGS variant calling qualification
+* [Page 5: 2024-30-03](#id-section6). Chapter 6: Visualization of Results
 
-* [Page 7: 2024-20-02](#id-section7). Chapter 7: WGS variant calling- pre-qualification criteria
+* [Page 6: 2024-15-01](#id-section7). Chapter 7: WGS variant calling qualification
 
+* [Page 7: 2024-20-02](#id-section8). Chapter 8: WGS variant calling- pre-qualification criteria
 
 ------
 <div id='id-section1'/>
@@ -714,13 +715,53 @@ cat GEB_0015_43A_INDELs_missionBio.vcf | grep -Ev 'Un_|_random' |
 
 
 
-
-
 -----
 <div id='id-section5'/>
 
 
-## Chapter 5: Visualization of Results
+## Chapter 5: COSMIC, DEPMAP, ONCO-PANEL incorporation
+
+
+```
+#!/bin/bash
+  
+# add clinVar term filt col
+python3 vcf_addClinVarTerm_filtCol.py GEB_0015_43A_SNPs_missionBio_final.vcf GEB_0015_43A_SNPs_missionBio_ClinVar.vcf
+
+# add allele freq. filter col
+python3 vcf_addAF_filtCol.py GEB_0015_43A_SNPs_missionBio_ClinVar.vcf GEB_0015_43A_SNPs_missionBio_ClinVar_AF.vcf
+
+# add COSMIC filter col
+python3 vcf_addCosmicID_filtCol_somatic.py GEB_0015_43A_SNPs_missionBio_ClinVar_AF.vcf GEB_0015_43A_SNPs_missionBio_ClinVar_Cosmic.vcf
+
+# split records with vcfEffOnePerLine
+cat GEB_0015_43A_SNPs_missionBio_ClinVar_Cosmic.vcf | perl vcfEffOnePerLine.pl > GEB_0015_43A_SNPs_missionBio_ClinVar_Cosmic_split.vcf
+
+# add function effect filter col
+python3 vcf_addFnxnEff_filtCol.py GEB_0015_43A_SNPs_missionBio_ClinVar_Cosmic.vcf GEB_0015_43A_SNPs_missionBio_ClinVar_Cosmic_split_function.vcf
+# add DEPMAP filter col
+python3 vcf_addDepMap_filtCol.py GEB_0015_43A_SNPs_missionBio_ClinVar_Cosmic_split_function.vcf GEB_0015_43A_SNPs_missionBio_ClinVar_Cosmic_split_function_DEPMAP.vcf merged_essential.tsv
+# add COSMIC GENE filter column
+python3 vcf_addCosmicGene_filtCol.py GEB_0015_43A_SNPs_missionBio_ClinVar_Cosmic_split_function_DEPMAP.vcf GEB_0015_43A_SNPs_missionBio_ClinVar_Cosmic_split_function_DEPMAP_cosGene.vcf Cosmic_hemato_genes.tsv
+# add ONCO-PANEL GENE filter column
+python3 vcf_addOncoPanelGene_filtCol.py GEB_0015_43A_SNPs_missionBio_ClinVar_Cosmic_split_function_DEPMAP_cosGene.vcf  GEB_0015_43A_SNPs_final.vcf  OncoPanelGenes.tsv
+
+rm GEB_0015_43A_SNPs_missionBio_ClinVar.vcf
+rm GEB_0015_43A_SNPs_missionBio_ClinVar_AF.vcf
+rm GEB_0015_43A_SNPs_missionBio_ClinVar_Cosmic.vcf
+rm GEB_0015_43A_SNPs_missionBio_ClinVar_Cosmic_split.vcf
+rm GEB_0015_43A_SNPs_missionBio_ClinVar_Cosmic_split_function.vcf
+rm GEB_0015_43A_SNPs_missionBio_ClinVar_Cosmic_split_function_DEPMAP.vcf
+rm GEB_0015_43A_SNPs_missionBio_ClinVar_Cosmic_split_function_DEPMAP_cosGene.vcf
+```
+
+
+
+-----
+<div id='id-section6'/>
+
+
+## Chapter 6: Visualization of Results
 -----
 ### Visualization
 
@@ -844,10 +885,10 @@ dev.off()
 ![image](GEB0017_571_SNPs_barplot.png)
 
 -----
-<div id='id-section6'/>
+<div id='id-section7'/>
 
 
-## Chapter 6: WGS qualification (variant calling-2a)
+## Chapter 7: WGS qualification (variant calling-2a)
 
 ![image](WGS_qual_valid.png)
 
@@ -1139,10 +1180,10 @@ this will generate the dataset like this-
 
 
 -----
-<div id='id-section7'/>
+<div id='id-section8'/>
 
 
-## Chapter 7: WGS variant calling- pre-qualification criteria
+## Chapter 8: WGS variant calling- pre-qualification criteria
 
 In this approach we just choose 10 random populations from 1000 genomes and calculated whats the similarity and eventually whats the similarity. 
 

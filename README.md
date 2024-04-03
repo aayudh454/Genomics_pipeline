@@ -900,6 +900,256 @@ if __name__ == '__main__':
     main()
 ```
 
+Script to add function effect filter col **vcf_addFnxnEff_filtCol.py**
+
+```
+#!/usr/bin/env python3
+
+import argparse
+import vcf
+
+# Define command-line arguments
+parser = argparse.ArgumentParser()
+parser.add_argument("input_file", help="Input VCF file")
+parser.add_argument("output_file", help="Output VCF file")
+args = parser.parse_args()
+
+# Open input VCF file and create output VCF file
+vcf_reader = vcf.Reader(open(args.input_file, 'r'))
+vcf_writer = vcf.Writer(open(args.output_file, 'w'), vcf_reader)
+
+# # Add new INFO field to header
+# new_info = vcf.parser._Info('effect_function', '1', 'String', 'Whether HIGH or MODERATE impact is present', None, None)
+# vcf_reader.infos['effect_function'] = new_info
+# vcf_writer._write_header()
+# add the new "clinVar" field to the header of the output file
+vcf_reader.infos["effect"] = vcf.parser._Info(id="effect_function", num=1, type="String", desc="Whether HIGH or MODERATE impact is present", source=None, version=None)
+# create a VCF Writer object for the output file, using the header from the input file
+vcf_writer = vcf.Writer(open(args.output_file, 'w'), vcf_reader)
+
+
+# Loop through records and check for HIGH or MODERATE impact
+for record in vcf_reader:
+    if 'ANN' in record.INFO:
+        ann_list = record.INFO['ANN']
+        if isinstance(ann_list, str):
+            ann_list = [ann_list]
+        for ann in ann_list:
+            ann_fields = ann.split('|')
+            impact = ann_fields[2]
+            if impact == 'HIGH' or impact == 'MODERATE':
+                record.INFO['effect_function'] = 'TRUE'
+                break
+        else:
+            record.INFO['effect_function'] = 'FALSE'
+    else:
+        record.INFO['effect_function'] = 'FALSE'
+    vcf_writer.write_record(record)
+
+# Close input and output files
+#vcf_reader.close()
+vcf_writer.close()
+```
+
+Script to add DEPMAP filter col **vcf_addDepMap_filtCol.py**
+
+```
+#!/usr/bin/env python3
+
+import argparse
+
+
+def load_known_genes(file_path):
+    with open(file_path, 'r') as file:
+        known_genes = [line.strip() for line in file]
+    return known_genes
+
+
+def annotate_vcf(input_file, output_file, known_genes_file):
+    # Load known genes
+    known_genes = load_known_genes(known_genes_file)
+
+    # Read VCF lines
+    with open(input_file, 'r') as input_vcf:
+        vcf_lines = input_vcf.readlines()
+
+    # Modify the header
+    vcf_header = []
+    added_header_line = False
+    for line in vcf_lines:
+        if line.startswith('#'):
+            if not added_header_line and line.startswith('##INFO'):
+                vcf_header.append('##INFO=<ID=DEPMAP_anno,Number=1,Type=String,Description="Whether known gene is present">\n')
+                added_header_line = True
+            vcf_header.append(line)
+        else:
+            break
+
+    # Process each variant
+    with open(output_file, 'w') as output_vcf:
+        output_vcf.writelines(vcf_header)  # Write the modified header
+
+        for line in vcf_lines:
+            if line.startswith('#'):  # Skip header lines
+                continue
+
+            fields = line.strip().split('\t')
+            info_field = fields[7]
+            depmap_anno = "FALSE"
+
+            if "ANN" in info_field:
+                ann_list = info_field.split(';')[1:]
+                for ann in ann_list:
+                    ann_fields = ann.split('|')
+                    if len(ann_fields) >= 4:  # Check if enough elements exist in ann_fields
+                        gene_name = ann_fields[3]
+                        if gene_name in known_genes:
+                            depmap_anno = "TRUE"
+                            break
+
+            fields[7] = info_field + f";DEPMAP_anno={depmap_anno}"
+            output_vcf.write('\t'.join(fields) + '\n')
+
+
+if __name__ == "__main__":
+    # Parse command-line arguments
+    parser = argparse.ArgumentParser(description="Annotate VCF file with DEPMAP_anno")
+    parser.add_argument("input_file", help="Input VCF file")
+    parser.add_argument("output_file", help="Output VCF file")
+    parser.add_argument("known_genes_file", help="File containing a list of known genes")
+    args = parser.parse_args()
+
+    annotate_vcf(args.input_file, args.output_file, args.known_genes_file)
+```
+
+
+Script to add COSMIC GENE filter column **vcf_addCosmicGene_filtCol.py**
+
+```
+#!/usr/bin/env python3
+
+import argparse
+
+
+def load_known_genes(file_path):
+    with open(file_path, 'r') as file:
+        known_genes = [line.strip() for line in file]
+    return known_genes
+
+
+def annotate_vcf(input_file, output_file, known_genes_file):
+    # Load known genes
+    known_genes = load_known_genes(known_genes_file)
+
+    # Read VCF lines
+    with open(input_file, 'r') as input_vcf:
+        vcf_lines = input_vcf.readlines()
+
+    # Modify the header
+    vcf_header = []
+    added_header_line = False
+    for line in vcf_lines:
+        if line.startswith('#'):
+            if not added_header_line and line.startswith('##INFO'):
+                vcf_header.append('##INFO=<ID=COSMIC_gene_anno,Number=1,Type=String,Description="Whether known gene is present in COSMIC hemato gene list">\n')
+                added_header_line = True
+            vcf_header.append(line)
+        else:
+            break
+
+    # Process each variant
+    with open(output_file, 'w') as output_vcf:
+        output_vcf.writelines(vcf_header)  # Write the modified header
+
+        for line in vcf_lines:
+            if line.startswith('#'):  # Skip header lines
+                continue
+
+            fields = line.strip().split('\t')
+            info_field = fields[7]
+            csmc_gene_anno = "FALSE"
+
+            if "ANN" in info_field:
+                ann_list = info_field.split(';')[1:]
+                for ann in ann_list:
+                    ann_fields = ann.split('|')
+                    if len(ann_fields) >= 4:  # Check if enough elements exist in ann_fields
+                        gene_name = ann_fields[3]
+                        if gene_name in known_genes:
+                            csmc_gene_anno = "TRUE"
+                            break
+
+            fields[7] = info_field + f";COSMIC_gene_anno={csmc_gene_anno}"
+            output_vcf.write('\t'.join(fields) + '\n')
+
+
+if __name__ == "__main__":
+    # Parse command-line arguments
+    parser = argparse.ArgumentParser(description="Annotate VCF file with COSMIC_gene_anno")
+    parser.add_argument("input_file", help="Input VCF file")
+    parser.add_argument("output_file", help="Output VCF file")
+    parser.add_argument("known_genes_file", help="File containing a list of known genes")
+    args = parser.parse_args()
+
+    annotate_vcf(args.input_file, args.output_file, args.known_genes_file)                                                                    
+```
+
+Script to add ONCO-PANEL GENE filter column **vcf_addOncoPanelGene_filtCol.py**
+
+```
+#!/usr/bin/env python3
+  
+import argparse
+
+
+def load_known_genes(file_path):
+    with open(file_path, 'r') as file:
+        known_genes = [line.strip() for line in file]
+    return known_genes
+
+
+def annotate_vcf(input_file, output_file, known_genes_file):
+    # Load known genes
+    known_genes = load_known_genes(known_genes_file)
+
+    # Read VCF lines
+    with open(input_file, 'r') as input_vcf:
+        vcf_lines = input_vcf.readlines()
+
+    # Modify the header
+    vcf_header = []
+    added_header_line = False
+    for line in vcf_lines:
+        if line.startswith('#'):
+            if not added_header_line and line.startswith('##INFO'):
+                vcf_header.append('##INFO=<ID=OncoPanel_anno,Number=1,Type=String,Description="Whether known gene is present in OncoPanel gene list">\n')
+                added_header_line = True
+            vcf_header.append(line)
+        else:
+            break
+
+    # Process each variant
+    with open(output_file, 'w') as output_vcf:
+        output_vcf.writelines(vcf_header)  # Write the modified header
+
+        for line in vcf_lines:
+            if line.startswith('#'):  # Skip header lines
+                continue
+
+            fields = line.strip().split('\t')
+            info_field = fields[7]
+            oncopanel_gene_anno = "FALSE"
+
+            if "ANN" in info_field:
+                ann_list = info_field.split(';')[1:]
+                for ann in ann_list:
+                    ann_fields = ann.split('|')
+                    if len(ann_fields) >= 4:  # Check if enough elements exist in ann_fields
+                        gene_name = ann_fields[3]
+                        if gene_name in known_genes:
+                            oncopanel_gene_anno = "TRUE"
+"vcf_addOncooutput_vcf.write('\t'.join(fields) + '\n')={oncopanel_gene_anno}"     
+```
 -----
 <div id='id-section6'/>
 

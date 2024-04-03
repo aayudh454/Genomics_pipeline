@@ -834,7 +834,71 @@ def check_allele_frequencies(record):
     return True
 ```
 
+Script to add COSMIC filter col **vcf_addCosmicID_filtCol_somatic.py**
 
+```
+#!/usr/bin/env python3
+
+import argparse
+import vcf
+def main():
+    # parse command line arguments
+    parser = argparse.ArgumentParser(description='Add COSMIC annotation to a VCF file')
+    parser.add_argument('input_file', help='Input VCF file path')
+    parser.add_argument('output_file', help='Output VCF file path')
+    args = parser.parse_args()
+    # open input VCF file
+    vcf_reader = vcf.Reader(open(args.input_file, 'r'))
+    # add COSMIC_anno to header
+    vcf_reader.infos['COSMIC_anno'] = vcf.parser._Info(
+        id='COSMIC_anno',
+        num=1,
+        type='String',
+        desc='COSMIC annotation (Variant has COSMIC db entries of interest)',
+        source=None,
+        version=None
+    )
+    # open output VCF file
+    vcf_writer = vcf.Writer(open(args.output_file, 'w'), vcf_reader)
+    # iterate over records
+    for record in vcf_reader:
+        # check if any of the cosmic IDs are present in INFO field
+
+        #cosmic_ids = ['CS004324', 'CS000334', 'CS00023532', 'CS0034534']
+        cosmic_ids = ['COSV59205440','COSV59205318','COSV59205799','COSV56681399',
+                      'COSV58963463','COSV68944533','COSV55497479','COSV55498802',
+                      'COSV55497369','COSV55497388','COSV55497461','COSV55501778',
+                      'COSV55497419','COSV55867803','COSV55386424','COSV54736940',
+                      'COSV54736320','COSV54736310','COSV54736416','COSV54736383',
+                      'COSV54736340','COSV54736621','COSV54736476','COSV54736487',
+                      'COSV54736550','COSV54736480','COSV54736555','COSV54736974',
+                      'COSV54736624','COSV59323790','COSV59325175','COSV59325003',
+                      'COSV59325418','COSV65243776','COSV67569051','COSV53036153',
+                      'COSV52367994','COSV56311834','COSV53829466','COSV61004775',
+                      'COSV61005613','COSV61004841','COSV61006382','COSV61004889',
+                      'COSV61005158','COSV61005372','COSV61615239','COSV61615649',
+                      'COSV61615256','COSV50629675','COSV50629681','COSV52661282',
+                      'COSV52662281','COSV52661580','COSV52662066','COSV52660980',
+                      'COSV52662035','COSV57468734','COSV57468772','COSV57468989',
+                      'COSV57468751','COSV57468971','COSV58117136','COSV58117871',
+                      'COSV57969809','COSV55257406','COSV71685519','COSV71685371',
+                      'COSV52341147','COSV52341059','COSV52341120','COSV57446054',
+                      'COSV57445929','COSV57445793','COSV57445823','COSV56056643',
+                      'COSV58682746','COSV55891746','COSV55891008','COSV55891274',
+                      'COSV52112787','COSV52113365','COSV57124003','COSV54042116',
+                      'COSV62191852','COSV57169334','COSV67493408']
+
+        cosmic_present = any(cosmic_id in record.INFO.get('COSMIC_ID', []) for cosmic_id in cosmic_ids)
+        # add COSMIC_anno to INFO field
+        record.INFO['COSMIC_anno'] = 'TRUE' if cosmic_present else 'FALSE'
+        # write record to output VCF file
+        vcf_writer.write_record(record)
+    # close files
+    vcf_reader._reader.close()
+    vcf_writer.close()
+if __name__ == '__main__':
+    main()
+```
 
 -----
 <div id='id-section6'/>

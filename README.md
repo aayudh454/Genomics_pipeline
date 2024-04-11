@@ -17,6 +17,8 @@
 
 * [Page 7: 2024-20-02](#id-section8). Chapter 8: WGS variant calling- pre-qualification criteria
 
+* [Page 7: 2024-11-04](#id-section9). Chapter 9: Oncopanel
+
 ------
 <div id='id-section1'/>
 

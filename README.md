@@ -1690,3 +1690,24 @@ The dataset looks like this----
 
 ![image](pre-qual.png)
 
+-----
+<div id='id-section9'/>
+
+
+## Chapter 9: Oncopanel
+
+#### Basepair data upload
+
+go to the URL of basepair to find out what project ID is that. Execute this from home directory. 
+
+```
+basepair sample create \
+--project 14093 \
+-c /data/home/aayudh-das/basepair.config.json \
+--type wgs \
+--platform Illumina \
+--genome hg19 \
+--name ICB-0004-02D_onco \
+--file1 /data/home/aayudh-das/oncopanel/CA11_0004_02D_03D/RCB-ICB-0004-02D-p15-1-5E6-Vial-Harvest-14SEP2023_R1_001.fastq.gz \
+--file2 /data/home/aayudh-das/oncopanel/CA11_0004_02D_03D/RCB-ICB-0004-02D-p15-1-5E6-Vial-Harvest-14SEP2023_R2_001.fastq.gz
+```

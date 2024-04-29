@@ -1713,3 +1713,20 @@ basepair sample create \
 --file1 /data/home/aayudh-das/oncopanel/CA11_0004_02D_03D/RCB-ICB-0004-02D-p15-1-5E6-Vial-Harvest-14SEP2023_R1_001.fastq.gz \
 --file2 /data/home/aayudh-das/oncopanel/CA11_0004_02D_03D/RCB-ICB-0004-02D-p15-1-5E6-Vial-Harvest-14SEP2023_R2_001.fastq.gz
 ```
+
+-----
+<div id='id-section10'/>
+
+
+## Chapter 10: NGS Task
+
+### Main question
+
+#### 1.	Which gene region did those reads map to?
+
+```
+samtools idxstats aln.bam | cut -f1,3 > samtools_stat.txt
+```
+
+
+

@@ -1756,6 +1756,8 @@ bedtools intersect -a aln.bam -b genome_annotation.gtf -wa -wb > mapped_regions.
 ```
 As such files were not provided so we skipped this step.
 
+#### 2. What variants/mutations can you identify in this data? How can you evaluate which variants are more “real” than others both from the technical and biological perspectives?
+
 ```
 # Create directories and set environment variables
 # Run Sentieon genomic data processing

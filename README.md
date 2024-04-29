@@ -1742,3 +1742,17 @@ ggplot(chromosome_data, aes(x = Chromosome, y = Count)) +
 
 Most of reads are mapped to chromosome 7. 
 
+```
+samtools view aln.bam 7:1-159138663
+```
+
+So, we just looked at chr 7 and found that most of the reads are mapped at **EGFR_S1**. 
+
+Note: A better way will be if you have the gtf/bed file then run- 
+
+```
+bedtools intersect -a aln.bam -b genome_annotation.gtf -wa -wb > mapped_regions.txt
+```
+As such files were not provided so we skipped this step.
+
+

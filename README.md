@@ -1756,4 +1756,15 @@ bedtools intersect -a aln.bam -b genome_annotation.gtf -wa -wb > mapped_regions.
 ```
 As such files were not provided so we skipped this step.
 
+```
+# Create directories and set environment variables
+# Run Sentieon genomic data processing
+sentieon driver -t 72 -r hg19.ucsc.fa -i aln.hg19.bam --algo TNhaplotyper2 --tumor_sample aln /bp/analysis/121357/aln.hg19.variants.vcf.gz
+sentieon driver -t 72 -r hg19.ucsc.fa --algo TNfilter -v aln.hg19.variants.vcf.gz --tumor_sample miseq --min_median_base_qual 20 --min_median_map_qual 30 --unique_alt_reads 10 --min_alt_reads_per_strand 0 --min_tumor_af 0.01 --max_alt_count 1 --threshold_strategy f_score --f_score_beta 0.1 aln.hg19.filtered.variants.vcf.gz
 
+# Copy variant files to specified analysis directory
+/home/ec2-user/bioinfo/infra/storage/cp_file.py -s aln.hg19.filtered.variants.vcf.gz -d aln.hg19.filtered.variants.vcf.gz
+/home/ec2-user/bioinfo/infra/storage/cp_file.py -s aln.hg19.filtered.variants.vcf.gz.tbi -d aln.hg19.filtered.variants.vcf.gz.tbi
+/home/ec2-user/bioinfo/infra/storage/cp_file.py -s aln.hg19.variants.vcf.gz -d aln.hg19.variants.vcf.gz
+/home/ec2-user/bioinfo/infra/storage/cp_file.py -s aln.hg19.variants.vcf.gz.tbi -d aln.hg19.variants.vcf.gz.tbi
+```

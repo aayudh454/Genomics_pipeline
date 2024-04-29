@@ -1724,9 +1724,21 @@ basepair sample create \
 
 #### 1.	Which gene region did those reads map to?
 
+First we wanetd to see which region of the chromosome has more reads mapped.
 ```
 samtools idxstats aln.bam | cut -f1,3 > samtools_stat.txt
 ```
 
+```
+# Create the barplot
+ggplot(chromosome_data, aes(x = Chromosome, y = Count)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  theme_classic(base_family = "Arial") +
+  labs(title = NULL,
+       x = "Chromosome",
+       y = "Reads mapped") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) # Rotate x labels for better visibility
+```
 
+Most of reads are mapped to chromosome 7. 
 

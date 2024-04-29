@@ -1739,6 +1739,7 @@ ggplot(chromosome_data, aes(x = Chromosome, y = Count)) +
        y = "Reads mapped") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) # Rotate x labels for better visibility
 ```
+![image](chromosome_barplot.png)
 
 Most of reads are mapped to chromosome 7. 
 

@@ -9,15 +9,17 @@
 
 * [Page 4: 2024-30-03](#id-section4). Chapter 4: Clinvar and MissionBio incorporation
 
-* [Page 4: 2024-30-03](#id-section5). Chapter 5: COSMIC, DEPMAP, ONCO-PANEL incorporation
+* [Page 5: 2024-30-03](#id-section5). Chapter 5: COSMIC, DEPMAP, ONCO-PANEL incorporation
 
-* [Page 5: 2024-30-03](#id-section6). Chapter 6: Visualization of Results
+* [Page 6: 2024-30-03](#id-section6). Chapter 6: Visualization of Results
 
-* [Page 6: 2024-15-01](#id-section7). Chapter 7: WGS variant calling qualification
+* [Page 7: 2024-15-01](#id-section7). Chapter 7: WGS variant calling qualification
 
-* [Page 7: 2024-20-02](#id-section8). Chapter 8: WGS variant calling- pre-qualification criteria
+* [Page 8: 2024-20-02](#id-section8). Chapter 8: WGS variant calling- pre-qualification criteria
 
-* [Page 7: 2024-11-04](#id-section9). Chapter 9: Oncopanel
+* [Page 9: 2024-11-04](#id-section9). Chapter 9: Oncopanel
+
+* [Page 10: 2024-29-04](#id-section10). Chapter 10: NGS task
 
 ------
 <div id='id-section1'/>

@@ -1770,3 +1770,7 @@ sentieon driver -t 72 -r hg19.ucsc.fa --algo TNfilter -v aln.hg19.variants.vcf.g
 /home/ec2-user/bioinfo/infra/storage/cp_file.py -s aln.hg19.variants.vcf.gz -d aln.hg19.variants.vcf.gz
 /home/ec2-user/bioinfo/infra/storage/cp_file.py -s aln.hg19.variants.vcf.gz.tbi -d aln.hg19.variants.vcf.gz.tbi
 ```
+
+
+
+

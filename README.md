@@ -21,7 +21,7 @@
 
 * [Page 10: 2024-29-04](#id-section10). Chapter 10: NGS task
 
-* [Page 11: 2024-20-07](#id-section10). Chapter 11: Oncopanel qualification and validation
+* [Page 11: 2024-20-07](#id-section11). Chapter 11: Oncopanel qualification and validation
 
 ------
 <div id='id-section1'/>

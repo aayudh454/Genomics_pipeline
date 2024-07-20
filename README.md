@@ -1778,7 +1778,88 @@ sentieon driver -t 72 -r hg19.ucsc.fa --algo TNfilter -v aln.hg19.variants.vcf.g
 
 ## Chapter 11: Oncopanel qualification and validation
 
-#### Basepair data upload
+Download the SnpEff file
+snpeff/SRR360540_HG01953_LimaPeru.hg19.filtered.variants.w_AF.parsed.zip
 
+Then convert it to vcf file--
+```
+gunzip SRR360540_HG01953_LimaPeru.hg19.filtered.variants.w_AF.annotated.vcf.gz
+```
+
+#### Subset based on oncopanel list of 530 genes
+Get the OncoPanelGenes.tsv on the same directory. 
+
+```
+python3 vcf_addOncoPanelGene_filtCol.py SRR360540_HG01953_LimaPeru.hg19.filtered.variants.w_AF.annotated.vcf LimaPeru_onco.vcf /data/home/aayudh-das/valid_oncopnel/limaperu_GATK4/OncoPanelGenes.tsv
+```
+Details of the python script
+```
+#!/usr/bin/env python3
+
+import argparse
+
+
+def load_known_genes(file_path):
+    with open(file_path, 'r') as file:
+        known_genes = [line.strip() for line in file]
+    return known_genes
+
+
+def annotate_vcf(input_file, output_file, known_genes_file):
+    # Load known genes
+    known_genes = load_known_genes(known_genes_file)
+
+    # Read VCF lines
+    with open(input_file, 'r') as input_vcf:
+        vcf_lines = input_vcf.readlines()
+
+    # Modify the header
+    vcf_header = []
+    added_header_line = False
+    for line in vcf_lines:
+        if line.startswith('#'):
+            if not added_header_line and line.startswith('##INFO'):
+                vcf_header.append('##INFO=<ID=OncoPanel_anno,Number=1,Type=String,Description="Whether known gene is present in OncoPanel gene list">\n')
+                added_header_line = True
+            vcf_header.append(line)
+        else:
+            break
+
+    # Process each variant
+    with open(output_file, 'w') as output_vcf:
+        output_vcf.writelines(vcf_header)  # Write the modified header
+
+        for line in vcf_lines:
+            if line.startswith('#'):  # Skip header lines
+                continue
+
+            fields = line.strip().split('\t')
+            info_field = fields[7]
+            oncopanel_gene_anno = "FALSE"
+
+            if "ANN" in info_field:
+                ann_list = info_field.split(';')[1:]
+                for ann in ann_list:
+                    ann_fields = ann.split('|')
+                    if len(ann_fields) >= 4:  # Check if enough elements exist in ann_fields
+                        gene_name = ann_fields[3]
+                        if gene_name in known_genes:
+                            oncopanel_gene_anno = "TRUE"
+                            break
+
+            fields[7] = info_field + f";OncoPanel_anno={oncopanel_gene_anno}"
+            output_vcf.write('\t'.join(fields) + '\n')
+
+
+if __name__ == "__main__":
+    # Parse command-line arguments
+    parser = argparse.ArgumentParser(description="Annotate VCF file with OncoPanel_anno")
+    parser.add_argument("input_file", help="Input VCF file")
+    parser.add_argument("output_file", help="Output VCF file")
+    parser.add_argument("known_genes_file", help="File containing a list of known genes")
+    args = parser.parse_args()
+
+    annotate_vcf(args.input_file, args.output_file, args.known_genes_file)
+```
 
 

@@ -1916,4 +1916,36 @@ with open(output_vcf_file, 'w') as output_file:
 print(f"Filtered VCF file has been created as '{output_vcf_file}'")
 
 ```
+### 4) Make coordinate (RUN: 4.coordinate_make.py)
 
+```
+#!/usr/bin/env python3
+  
+import pandas as pd
+
+# Read the VCF file
+vcf_file = 'filtered_LimaPeru_oncoTRUE.vcf'
+vcf_data = []
+
+# Open the VCF file and process each line
+with open(vcf_file, 'r') as file:
+    for line in file:
+        if not line.startswith('#'):
+            columns = line.strip().split('\t')
+            chrom = columns[0]
+            pos = columns[1]
+            ref = columns[3]
+            alt = columns[4]
+            coordinate = f"{chrom}:{pos}_{ref}>{alt}"
+            vcf_data.append([coordinate])
+
+# Create a DataFrame from the processed data
+df = pd.DataFrame(vcf_data, columns=['coordinate'])
+
+# Save the DataFrame to a CSV file
+output_csv = 'filtered_LimaPeru_oncoTRUE.csv'
+df.to_csv(output_csv, index=False)
+
+print(f"CSV file '{output_csv}' created successfully.")
+
+```

@@ -1786,7 +1786,7 @@ Then convert it to vcf file--
 gunzip SRR360540_HG01953_LimaPeru.hg19.filtered.variants.w_AF.annotated.vcf.gz
 ```
 
-#### Subset based on oncopanel list of 530 genes
+### 1) Subset based on oncopanel list of 530 genes (RUN: filtered_oncoTRUE.py)
 Get the OncoPanelGenes.tsv on the same directory. 
 
 ```
@@ -1862,4 +1862,58 @@ if __name__ == "__main__":
     annotate_vcf(args.input_file, args.output_file, args.known_genes_file)
 ```
 
+### 2) Now remove all that are not oncopanel hit (RUN: filtered_oncoTRUE.py)
+
+
+```
+#!/usr/bin/env python3
+  
+input_vcf = "LimaPeru_onco.vcf"
+output_vcf = "LimaPeru_oncoTRUE.vcf"
+
+with open(input_vcf, "r") as infile, open(output_vcf, "w") as outfile:
+    for line in infile:
+        if line.startswith("#"):
+            outfile.write(line)  # Write header lines as is
+        else:
+            columns = line.strip().split("\t")
+            info_column = columns[7]
+            if "OncoPanel_anno=TRUE" in info_column:
+                outfile.write(line)
+```
+### 3) Only keep chr1-22 and X,Y (RUN: oncoTRUE_filter.py)
+
+```
+#!/usr/bin/env python3
+  
+import pandas as pd
+
+# Define the VCF file path
+vcf_file = "LimaPeru_oncoTRUE.vcf"
+output_vcf_file = "filtered_LimaPeru_oncoTRUE.vcf"
+
+# Function to check if the chromosome column meets the criteria
+def is_valid_chromosome(chrom):
+    if chrom.startswith('chr'):
+        chrom = chrom[3:]
+        if chrom.isdigit():
+            return 1 <= int(chrom) <= 22
+        elif chrom in ['X', 'Y']:
+            return True
+    return False
+
+# Read the VCF file
+with open(vcf_file, 'r') as file:
+    lines = file.readlines()
+
+# Filter lines
+filtered_lines = [line for line in lines if line.startswith('#') or is_valid_chromosome(line.split('\t')[0])]
+
+# Write the filtered lines to a new VCF file
+with open(output_vcf_file, 'w') as output_file:
+    output_file.writelines(filtered_lines)
+
+print(f"Filtered VCF file has been created as '{output_vcf_file}'")
+
+```
 

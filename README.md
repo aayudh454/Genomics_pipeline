@@ -1923,29 +1923,34 @@ print(f"Filtered VCF file has been created as '{output_vcf_file}'")
   
 import pandas as pd
 
-# Read the VCF file
-vcf_file = 'filtered_LimaPeru_oncoTRUE.vcf'
-vcf_data = []
+# Read the CSV files
+df1 = pd.read_csv('1a.LimaPeru_basepair_coordinates.csv')
+df2 = pd.read_csv('1b.Limaperu_IGSR_coordinates.csv')
 
-# Open the VCF file and process each line
-with open(vcf_file, 'r') as file:
-    for line in file:
-        if not line.startswith('#'):
-            columns = line.strip().split('\t')
-            chrom = columns[0]
-            pos = columns[1]
-            ref = columns[3]
-            alt = columns[4]
-            coordinate = f"{chrom}:{pos}_{ref}>{alt}"
-            vcf_data.append([coordinate])
+# Extract the 'coordinate' column from both dataframes
+coords1 = set(df1['coordinate'])
+coords2 = set(df2['coordinate'])
 
-# Create a DataFrame from the processed data
-df = pd.DataFrame(vcf_data, columns=['coordinate'])
+# Find common coordinates
+common_coords = coords1.intersection(coords2)
 
-# Save the DataFrame to a CSV file
-output_csv = 'filtered_LimaPeru_oncoTRUE.csv'
-df.to_csv(output_csv, index=False)
+# Count total number of coordinates in both files
+total_coords1 = len(coords1)
+total_coords2 = len(coords2)
 
-print(f"CSV file '{output_csv}' created successfully.")
+# Count number of coordinates in 1a that are present in 1b
+common_count = len(common_coords)
+
+percentage_common = (common_count / total_coords1) * 100
+
+print(f"Total number of coordinates in 1a: {total_coords1}")
+print(f"Total number of coordinates in 1b: {total_coords2}")
+print(f"Number of coordinates in 1a that are present in 1b: {common_count}")
+print(f"Percentage of coordinates in 1a that are present in 1b: {percentage_common:.2f}%")
 
 ```
+for **LimaPeru**
+Total number of coordinates in 1a: 87771
+Total number of coordinates in 1b: 3844383
+Number of coordinates in 1a that are present in 1b: 74452
+Percentage of coordinates in 1a that are present in 1b: 84.83%

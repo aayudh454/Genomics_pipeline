@@ -1790,7 +1790,7 @@ gunzip SRR360540_HG01953_LimaPeru.hg19.filtered.variants.w_AF.annotated.vcf.gz
 Get the OncoPanelGenes.tsv on the same directory. 
 
 ```
-python3 vcf_addOncoPanelGene_filtCol.py SRR360540_HG01953_LimaPeru.hg19.filtered.variants.w_AF.annotated.vcf LimaPeru_onco.vcf /data/home/aayudh-das/valid_oncopnel/limaperu_GATK4/OncoPanelGenes.tsv
+python3 1.vcf_addOncoPanelGene_filtCol.py SRR360540_HG01953_LimaPeru.GRCh38.filtered.variants.w_AF.annotated.vcf LimaPeru_onco.vcf /data/home/aayudh-das/valid_oncopnel/limaperu_GATK4/OncoPanelGenes.tsv
 ```
 Details of the python script
 ```

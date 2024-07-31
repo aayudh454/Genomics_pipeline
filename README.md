@@ -1963,5 +1963,10 @@ Total number of coordinates in 1b: 3979189
 Number of coordinates in 1a that are present in 1b: 50105
 Percentage of coordinates in 1a that are present in 1b: **79.91%**
 
+for **Columnbian**
+Total number of coordinates in 1a: 69803
+Total number of coordinates in 1b: 3905952
+Number of coordinates in 1a that are present in 1b: 57114
+Percentage of coordinates in 1a that are present in 1b: **81.82%**
 
 Cut-off **64.4%** 

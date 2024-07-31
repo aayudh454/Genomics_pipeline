@@ -1954,3 +1954,10 @@ Total number of coordinates in 1a: 86438
 Total number of coordinates in 1b: 3844383
 Number of coordinates in 1a that are present in 1b: 74452
 Percentage of coordinates in 1a that are present in 1b: 86.13%
+
+for **PuertoRico**
+
+Total number of coordinates in 1a: 62703
+Total number of coordinates in 1b: 3979189
+Number of coordinates in 1a that are present in 1b: 50105
+Percentage of coordinates in 1a that are present in 1b: 79.91%

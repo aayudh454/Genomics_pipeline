@@ -1962,3 +1962,6 @@ Total number of coordinates in 1a: 62703
 Total number of coordinates in 1b: 3979189
 Number of coordinates in 1a that are present in 1b: 50105
 Percentage of coordinates in 1a that are present in 1b: **79.91%**
+
+
+Cut-off **64.4%** 
